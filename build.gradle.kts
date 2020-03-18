@@ -58,8 +58,8 @@ gradlePlugin {
 
 pluginBundle {
     // These settings are set for the whole plugin bundle
-    website = "https://github.com/worker8/"
-    vcsUrl = "https://github.com/worker8/"
+    website = "https://github.com/worker8/AndroidLintReporter"
+    vcsUrl = "https://github.com/worker8/AndroidLintReporter"
     // tags and description can be set for the whole bundle here, but can also
     // be set / overridden in the config for specific plugins
     //description = "Just a friendly description for my learning!"
@@ -84,10 +84,10 @@ pluginBundle {
         // first plugin
         "AndroidLintReporterPlugin" {
             // id is captured from java-gradle-plugin configuration
-            description = "Gradle Plugin to parse, format, report Android Lint result using Github Actions"
+            description = "Gradle Plugin to parse, format, report Android Lint result back to Github Pull Request using Github Actions"
             tags = listOf("android", "lint", "github-actions")
             version = "1.0.0"
-            displayName = "Gradle Plugin for Android Lint Reporter using Github Actions"
+            displayName = "Android Lint Reporter"
         }
     }
 }
