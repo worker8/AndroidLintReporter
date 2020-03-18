@@ -10,19 +10,30 @@ import org.gradle.api.Project
 import org.gradle.api.Plugin
 import java.io.File
 
+open class AndroidLintReporterPluginExtension(
+        var lintFilePath: String = "",
+        var githubToken: String = "",
+        var githubUsername: String = "",
+        var githubRepositoryName: String = "")
+
 class AndroidLintReporterPlugin : Plugin<Project> {
     override fun apply(project: Project) {
+//        val githubPullRequestId: String by project
         // Register a task
+        val extension = project.extensions.create("android_lint_reporter", AndroidLintReporterPluginExtension::class.java)
+
         project.tasks.register("parseAndSendLintResult") { task ->
             task.doLast {
-                // val lintFilePath = "./app/build/reports/lint-results.xml"
-                val tempFilePath = "./src/main/resources/lint-results.xml"
-                val githubToken = ""
-                val githubUsername = "worker8"
-                val githubRepositoryName = "SimpleCurrency"
-                val githubPullRequestId = "4"
+                println("received extension: ${extension.githubRepositoryName} ${extension.githubToken}")
 
-                val file = File(tempFilePath)
+                // val lintFilePath = "./app/build/reports/lint-results.xml"
+//                val tempFilePath = "./src/main/resources/lint-results.xml"
+//                val githubToken = "b0d29c9987fb0b98c26640b1c312f2b4e33d2ec9"
+//                val githubUsername = "worker8"
+//                val githubRepositoryName = "SimpleCurrency"
+//                val githubPullRequestId = "4"
+                val githubPullRequestId = project.properties.get("githubPullRequestId") as String
+                val file = File(extension.lintFilePath)
                 println("file: ${file.absoluteFile}")
 //                println(file.readText())
                 val fileTreeWalk = File("./").walkTopDown()
@@ -32,13 +43,13 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                     }
                 }
 
-                val issues = Parser.parse(File(tempFilePath))
+                val issues = Parser.parse(File(extension.lintFilePath))
                 val bodyString = Renderer.render(issues)
 
                 val service = GithubService.create(
-                        githubToken = githubToken,
-                        username = githubUsername,
-                        repoName = githubRepositoryName,
+                        githubToken = extension.githubToken,
+                        username = extension.githubUsername,
+                        repoName = extension.githubRepositoryName,
                         pullRequestId = githubPullRequestId
                 )
 

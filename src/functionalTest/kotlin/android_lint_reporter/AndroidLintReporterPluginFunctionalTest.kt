@@ -8,11 +8,9 @@ import org.gradle.testkit.runner.GradleRunner
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-/**
- * A simple functional test for the 'android_lint_reporter.greeting' plugin.
- */
 class AndroidLintReporterPluginFunctionalTest {
-    @Test fun `can run task`() {
+    @Test
+    fun `can run task`() {
         // Setup the test build
         val projectDir = File("build/functionalTest")
         projectDir.mkdirs()
@@ -21,13 +19,19 @@ class AndroidLintReporterPluginFunctionalTest {
             plugins {
                 id('com.worker8.android_lint_reporter')
             }
+            android_lint_reporter {
+                lintFilePath = "./src/main/resources/lint-results.xml"
+                githubToken = "" // obtain github personal token from Github
+                githubUsername = "worker8"
+                githubRepositoryName = "SimpleCurrency"
+            }
         """)
 
         // Run the build
         val runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
-        runner.withArguments("parseAndSendLintResult")
+        runner.withArguments(listOf("parseAndSendLintResult", "-PgithubPullRequestId=4"))
         runner.withProjectDir(projectDir)
         val result = runner.build();
 
