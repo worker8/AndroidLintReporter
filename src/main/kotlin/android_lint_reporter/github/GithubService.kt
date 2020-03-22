@@ -21,7 +21,6 @@ class GithubService(
         return service.postComment(username, repoName, pullRequestId, requestBody)
     }
 
-
     companion object {
         const val GithubApiBaseUrl = "https://api.github.com"
         fun create(

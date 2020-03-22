@@ -21,7 +21,6 @@ class AndroidLintReporterPluginFunctionalTest {
             }
             android_lint_reporter {
                 lintFilePath = "./src/main/resources/lint-results.xml"
-                githubToken = "" // obtain github personal token from Github
                 githubUsername = "worker8"
                 githubRepositoryName = "SimpleCurrency"
             }
@@ -31,7 +30,7 @@ class AndroidLintReporterPluginFunctionalTest {
         val runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
-        runner.withArguments(listOf("parseAndSendLintResult", "-PgithubPullRequestId=4"))
+        runner.withArguments(listOf("parseAndSendLintResult", "-PgithubToken=","-PgithubPullRequestId=4"))
         runner.withProjectDir(projectDir)
         val result = runner.build();
 

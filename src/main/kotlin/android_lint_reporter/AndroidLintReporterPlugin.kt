@@ -6,48 +6,38 @@ package android_lint_reporter
 import android_lint_reporter.github.GithubService
 import android_lint_reporter.parser.Parser
 import android_lint_reporter.parser.Renderer
-import org.gradle.api.Project
 import org.gradle.api.Plugin
+import org.gradle.api.Project
 import java.io.File
 
 open class AndroidLintReporterPluginExtension(
         var lintFilePath: String = "",
-        var githubToken: String = "",
         var githubUsername: String = "",
         var githubRepositoryName: String = "")
 
 class AndroidLintReporterPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-//        val githubPullRequestId: String by project
-        // Register a task
         val extension = project.extensions.create("android_lint_reporter", AndroidLintReporterPluginExtension::class.java)
 
         project.tasks.register("parseAndSendLintResult") { task ->
             task.doLast {
-                println("received extension: ${extension.githubRepositoryName} ${extension.githubToken}")
-
-                // val lintFilePath = "./app/build/reports/lint-results.xml"
-//                val tempFilePath = "./src/main/resources/lint-results.xml"
-//                val githubToken = "b0d29c9987fb0b98c26640b1c312f2b4e33d2ec9"
-//                val githubUsername = "worker8"
-//                val githubRepositoryName = "SimpleCurrency"
-//                val githubPullRequestId = "4"
-                val githubPullRequestId = project.properties.get("githubPullRequestId") as String
-                val file = File(extension.lintFilePath)
-                println("file: ${file.absoluteFile}")
-//                println(file.readText())
-                val fileTreeWalk = File("./").walkTopDown()
-                fileTreeWalk.forEach {
-                    if (it.name.contains("lint-results.xml")) {
-                        println("path: ${it.absolutePath}")
-                    }
-                }
+                println("received extension: ${extension.githubUsername}/${extension.githubRepositoryName}")
+                val projectProperties = project.properties
+                val githubPullRequestId = projectProperties.get("githubPullRequestId") as String
+                val githubToken = projectProperties.get("githubToken") as String
+                // for debugging path
+//                val fileTreeWalk = File("./").walkTopDown()
+//                fileTreeWalk.forEach {
+//                    if (it.name.contains("lint-results.xml")) {
+//                        println("path: ${it.absolutePath}")
+//                    }
+//                }
 
                 val issues = Parser.parse(File(extension.lintFilePath))
                 val bodyString = Renderer.render(issues)
 
                 val service = GithubService.create(
-                        githubToken = extension.githubToken,
+                        githubToken = githubToken,
                         username = extension.githubUsername,
                         repoName = extension.githubRepositoryName,
                         pullRequestId = githubPullRequestId
@@ -57,6 +47,7 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                 if (response.isSuccessful) {
                     println("successfully posted lint result!")
                 } else {
+                    println("error: ${response.code()}, ${response.message()}")
                     println("lint result posting unsuccessful, error: ${response.errorBody()}")
                 }
 
