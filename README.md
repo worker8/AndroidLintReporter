@@ -73,9 +73,27 @@ jobs:
       - name: Run lint && parse lint-results.xml && send report to PR
         env:
           PR_NUMBER: ${{ github.event.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ./gradlew lint && ./gradlew parseAndSendLintResult -PgithubPullRequestId=$PR_NUMBER
+          ./gradlew lint && ./gradlew parseAndSendLintResult -PgithubPullRequestId=$PR_NUMBER -PgithubToken=$GITHUB_TOKEN
 ```
+
+<details>
+<summary>
+how to get GITHUB_TOKEN
+</summary>
+`GITHUB_TOKEN` can be obtained through these steps:
+  
+1. Go to Github's Settings --> Developer settings --> Generate new token.
+2. Check for **Repo (all)** and **workflow**
+
+After generating the token, paste it here:
+
+![image](https://user-images.githubusercontent.com/1988156/77247261-a5166000-6c72-11ea-88b8-ab59c96c66e1.png)
+
+</details>
+
+
 
 2. In `app/build.gradle`, setup the plugin:
 
