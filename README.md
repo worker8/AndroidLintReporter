@@ -26,7 +26,7 @@ Here is how it works.
 </summary>
 <br>
 <code>
-./gradlew lint && ./gradlew parseAndSendLintResult
+./gradlew lint && ./gradlew parseAndSendLintResult -PgithubPullRequestId=<PR number> -PgithubToken=<Github Access Token>
 </code>
 
 Note: The task `parseAndSendLintResult` is provided by this plugin!
@@ -118,7 +118,6 @@ plugins {
 }
 android_lint_reporter {
     lintFilePath = "./app/build/reports/lint-results.xml"
-    githubToken = "" // obtain github personal token from Github
     githubUsername = "worker8"
     githubRepositoryName = "AndroidLintReporter"
 }
@@ -132,7 +131,6 @@ plugins {
 }
 android_lint_reporter {
     lintFilePath = "./src/main/resources/lint-results.xml"
-    githubToken = "<your personal github token>"
     githubUsername = "worker8"
     githubRepositoryName = "AndroidLintReporter"
 }
