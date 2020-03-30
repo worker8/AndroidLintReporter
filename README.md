@@ -95,7 +95,22 @@ After generating the token, paste it here:
 
 
 
-2. In `app/build.gradle`, setup the plugin:
+2a. In `build.gradle`, setup this:
+
+```
+buildscript {
+  repositories {
+    maven {
+      url = uri("https://plugins.gradle.org/m2/")
+    }
+  }
+  dependencies {
+    classpath("gradle.plugin.com.worker8.android_lint_reporter:android_lint_reporter:1.0.1")
+  }
+}
+```
+
+2b. In `app/build.gradle`, setup the plugin:
 
 ```
 plugins {
