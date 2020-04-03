@@ -45,14 +45,11 @@ class AndroidLintReporterPlugin : Plugin<Project> {
 
                 val response = service.postComment(bodyString).execute()
                 if (response.isSuccessful) {
-                    println("successfully posted lint result!")
+                    println("Lint result is posted to https://github.com/${extension.githubUsername}/${extension.githubRepositoryName}/${githubPullRequestId}!")
                 } else {
-                    println("error: ${response.code()}, ${response.message()}")
-                    println("lint result posting unsuccessful, error: ${response.errorBody()}")
+                    println("An error has occurred... ")
+                    println("code: ${response.code()}, message: ${response.message()}, body: ${response.errorBody()}")
                 }
-
-                println("-----")
-                true
             }
         }
     }

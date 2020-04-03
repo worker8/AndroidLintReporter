@@ -1,134 +1,1554 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="5" by="lint 3.6.0">
+<issues format="5" by="lint 3.5.3">
 
     <issue
-        id="UnusedAttribute"
+        id="ObsoleteLintCustomCheck"
         severity="Warning"
-        message="Attribute `usesCleartextTraffic` is only used in API level 23 and higher (current min is 21)"
+        message="Lint found an issue registry (`androidx.annotation.experimental.lint.ExperimentalIssueRegistry`) which did not specify the Lint API version it was compiled with.&#xA;&#xA;**This means that the lint checks are likely not compatible.**&#xA;&#xA;If you are the author of this lint check, make your lint `IssueRegistry` class contain&#xA;  override val api: Int = com.android.tools.lint.detector.api.CURRENT_API&#xA;or from Java,&#xA;  @Override public int getApi() { return com.android.tools.lint.detector.api.ApiKt.CURRENT_API; }&#xA;&#xA;If you are just using lint checks from a third party library you have no control over, you can disable these lint checks (if they misbehave) like this:&#xA;&#xA;    android {&#xA;        lintOptions {&#xA;            disable &quot;UnsafeExperimentalUsageError&quot;,&#xA;                    &quot;UnsafeExperimentalUsageWarning&quot;&#xA;        }&#xA;    }&#xA;"
+        category="Lint"
+        priority="10"
+        summary="Obsolete custom lint check"
+        explanation="Lint can be extended with &quot;custom checks&quot;: additional checks implemented by developers and libraries to for example enforce specific API usages required by a library or a company coding style guideline.&#xA;&#xA;The Lint APIs are not yet stable, so these checks may either cause a performance degradation, or stop working, or provide wrong results.&#xA;&#xA;This warning flags custom lint checks that are found to be using obsolete APIs and will need to be updated to run in the current lint environment.&#xA;&#xA;It may also flag issues found to be using a **newer** version of the API, meaning that you need to use a newer version of lint (or Android Studio or Gradle plugin etc) to work with these checks."
+        includedVariants="debug"
+        excludedVariants="it,mock,release,staging">
+        <location
+            file="/Users/j-tan/.gradle/caches/transforms-2/files-2.1/ce9f21eaf816474b3afa5f9e9ac25f73/annotation-experimental-1.0.0/jars/lint.jar"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_address, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/contractor_address, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_address]"
         category="Correctness"
         priority="6"
-        summary="Attribute unused on older versions"
-        explanation="This check finds attributes set in XML files that were introduced in a version newer than the oldest version targeted by your application (with the `minSdkVersion` attribute).&#xA;&#xA;This is not an error; the application will simply ignore the attribute. However, if the attribute is important to the appearance or functionality of your application, you should consider finding an alternative way to achieve the same result with only available attributes, and then you can optionally create a copy of the layout in a layout-vNN folder which will be used on API NN or higher where you can take advantage of the newer attribute.&#xA;&#xA;Note: This check does not only apply to attributes. For example, some tags can be unused too, such as the new `&lt;tag>` element in layouts introduced in API 21."
-        errorLine1="        android:usesCleartextTraffic=&quot;@bool/usesCleartextTraffic&quot;>"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
         <location
-            file="/Users/j-tan/Desktop/Android-lab/SimpleCurrency/app/src/main/AndroidManifest.xml"
-            line="14"
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="46"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="95"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="122"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_address_label, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/contractor_address_label, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_address_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="46"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="86"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="113"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_birthday, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/contractor_birthday, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_birthday]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="46"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="77"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="104"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_birthday_label, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/contractor_birthday_label, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_birthday_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="46"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="68"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="95"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_gender, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/contractor_gender, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_gender]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="46"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="58"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="85"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_gender_label, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/contractor_gender_label, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_gender_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="46"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="49"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="76"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_name, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/contractor_name, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_name]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="46"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="40"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="67"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_name_label, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/contractor_name_label, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_name_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="46"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="31"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="58"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/guideline, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_contract_plan.xml defines @+id/guideline, layout/fragment_application_confirm.xml => layout/view_staff_information.xml defines @+id/guideline, layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/guideline, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/guideline]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="46"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_plan.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_staff_information.xml"
+            line="20"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="19"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/guideline, defined or included multiple times in layout/fragment_application_confirm.xml: [layout/fragment_application_confirm.xml => layout/view_contract_plan.xml defines @+id/guideline, layout/fragment_application_confirm.xml => layout/view_staff_information.xml defines @+id/guideline, layout/fragment_application_confirm.xml => layout/view_confirm_user_information.xml defines @+id/guideline, layout/fragment_application_confirm.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/guideline]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_confirm.xml"
+            line="82"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_plan.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_staff_information.xml"
+            line="20"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="19"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/examination_ng_reason, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/examination_ng_reason, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/examination_ng_reason, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/examination_ng_reason]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="65"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="57"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="57"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="69"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/examination_ng_reason_label, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/examination_ng_reason_label, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/examination_ng_reason_label, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/examination_ng_reason_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="65"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="48"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="48"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="60"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/examination_result, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/examination_result, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/examination_result, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/examination_result]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="65"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="39"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="39"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="51"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/examination_result_label, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/examination_result_label, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/examination_result_label, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/examination_result_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="65"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="30"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="30"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="42"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/guideline, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_contract_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_staff_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/guideline]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="65"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_plan.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_staff_information.xml"
+            line="20"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="19"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="18"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/examination_ng_reason, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/examination_ng_reason, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/examination_ng_reason, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/examination_ng_reason]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="79"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="57"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="57"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="69"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/examination_ng_reason_label, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/examination_ng_reason_label, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/examination_ng_reason_label, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/examination_ng_reason_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="79"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="48"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="48"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="60"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/examination_result, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/examination_result, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/examination_result, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/examination_result]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="79"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="39"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="39"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="51"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/examination_result_label, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/examination_result_label, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/examination_result_label, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/examination_result_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="79"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="30"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="30"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="42"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/guideline, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_contract_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_staff_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/guideline]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="                &lt;include"
+        errorLine2="                ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="79"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_plan.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_staff_information.xml"
+            line="20"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="19"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="18"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/guideline, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_contract_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_staff_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/guideline]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="117"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_plan.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_staff_information.xml"
+            line="20"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="19"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="18"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_address, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/contractor_address, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_address]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="95"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="122"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_address_label, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/contractor_address_label, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_address_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="86"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="113"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_birthday, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/contractor_birthday, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_birthday]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="77"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="104"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_birthday_label, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/contractor_birthday_label, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_birthday_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="68"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="95"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_gender, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/contractor_gender, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_gender]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="58"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="85"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_gender_label, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/contractor_gender_label, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_gender_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="49"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="76"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_name, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/contractor_name, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_name]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="40"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="67"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/contractor_name_label, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/contractor_name_label, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/contractor_name_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="31"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="58"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/guideline, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_contract_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_staff_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/guideline]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_plan.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_staff_information.xml"
+            line="20"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="19"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="18"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/sim_contractor_name, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/sim_contractor_name, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/sim_contractor_name]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="49"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/sim_contractor_name_label, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/sim_contractor_name_label, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/sim_contractor_name_label]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="131"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="41"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="25"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/guideline, defined or included multiple times in layout/fragment_application_detail.xml: [layout/fragment_application_detail.xml => layout/view_contract_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_credit_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_document_result.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_staff_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_confirm_user_information.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/guideline, layout/fragment_application_detail.xml => layout/view_examination_result.xml => layout/view_examination_detail.xml defines @+id/guideline]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_detail.xml"
+            line="158"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_plan.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_credit_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_document_result.xml"
+            line="23"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_staff_information.xml"
+            line="20"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="19"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_examination_detail.xml"
+            line="18"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/guideline, defined or included multiple times in layout/fragment_application_edit_confirm.xml: [layout/fragment_application_edit_confirm.xml => layout/view_one_photo_confirm.xml defines @+id/guideline, layout/fragment_application_edit_confirm.xml => layout/view_confirm_user_information.xml defines @+id/guideline]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="            &lt;include"
+        errorLine2="            ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/fragment_application_edit_confirm.xml"
+            line="51"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_one_photo_confirm.xml"
+            line="39"
+            column="17"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_confirm_user_information.xml"
+            line="24"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        severity="Warning"
+        message="Duplicate id @+id/guideline, defined or included multiple times in layout/view_contract_plan.xml: [layout/view_contract_plan.xml defines @+id/guideline, layout/view_contract_plan.xml => layout/view_contract_sim_plan.xml defines @+id/guideline]"
+        category="Correctness"
+        priority="6"
+        summary="Duplicate ids across layouts combined with include tags"
+        explanation="It&apos;s okay for two independent layouts to use the same ids. However, if layouts are combined with include tags, then the id&apos;s need to be unique within any chain of included layouts, or `Activity#findViewById()` can return an unexpected view."
+        errorLine1="        &lt;include"
+        errorLine2="        ^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_plan.xml"
+            line="157"
             column="9"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_plan.xml"
+            line="24"
+            column="13"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_contract_sim_plan.xml"
+            line="19"
+            column="13"/>
     </issue>
 
     <issue
         id="AllowBackup"
         severity="Warning"
-        message="On SDK version 23 and up, your app data will be automatically backed up and restored on app install. Consider adding the attribute `android:fullBackupContent` to specify an `@xml` resource which configures which files to backup. More info: https://developer.android.com/training/backup/autosyncapi.html"
+        message="On SDK version 23 and up, your app data will be automatically backed up, and restored on app install. Your GCM regid will not work across restores, so you must ensure that it is excluded from the back-up set. Use the attribute `android:fullBackupContent` to specify an `@xml` resource which configures which files to backup. More info: https://developer.android.com/training/backup/autosyncapi.html"
         category="Security"
         priority="3"
         summary="AllowBackup/FullBackupContent Problems"
-        explanation="The `allowBackup` attribute determines if an application&apos;s data can be backed up and restored. It is documented at http://developer.android.com/reference/android/R.attr.html#allowBackup&#xA;&#xA;By default, this flag is set to `true` which means application data can be backed up and restored by the OS. Setting `allowBackup=&quot;false&quot;` opts the application out of being backed up and so users can&apos;t restore data related to it when they go through the device setup wizard.&#xA;&#xA;Allowing backups may have security consequences for an application. Currently `adb backup` allows users who have enabled USB debugging to copy application data off of the device. Once backed up, all application data can be read by the user. `adb restore` allows creation of application data from a source specified by the user. Following a restore, applications should not assume that the data, file permissions, and directory permissions were created by the application itself.&#xA;&#xA;To fix this warning, decide whether your application should support backup, and explicitly set `android:allowBackup=(true|false)&quot;`.&#xA;&#xA;If not set to false, and if targeting API 23 or later, lint will also warn that you should set `android:fullBackupContent` to configure auto backup."
+        explanation="The `allowBackup` attribute determines if an application&apos;s data can be backed up and restored. It is documented at http://developer.android.com/reference/android/R.attr.html#allowBackup&#xA;&#xA;By default, this flag is set to `true`. When this flag is set to `true`, application data can be backed up and restored by the user using `adb backup` and `adb restore`.&#xA;&#xA;This may have security consequences for an application. `adb backup` allows users who have enabled USB debugging to copy application data off of the device. Once backed up, all application data can be read by the user. `adb restore` allows creation of application data from a source specified by the user. Following a restore, applications should not assume that the data, file permissions, and directory permissions were created by the application itself.&#xA;&#xA;Setting `allowBackup=&quot;false&quot;` opts an application out of both backup and restore.&#xA;&#xA;To fix this warning, decide whether your application should support backup, and explicitly set `android:allowBackup=(true|false)&quot;`.&#xA;&#xA;If not set to false, and if targeting API 23 or later, lint will also warn that you should set `android:fullBackupContent` to configure auto backup."
         url="https://developer.android.com/training/backup/autosyncapi.html"
         urls="https://developer.android.com/training/backup/autosyncapi.html,http://developer.android.com/reference/android/R.attr.html#allowBackup"
         errorLine1="    &lt;application"
         errorLine2="     ~~~~~~~~~~~">
         <location
-            file="/Users/j-tan/Desktop/Android-lab/SimpleCurrency/app/src/main/AndroidManifest.xml"
-            line="6"
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/AndroidManifest.xml"
+            line="14"
             column="6"/>
     </issue>
 
     <issue
-        id="NestedWeights"
+        id="ObsoleteSdkInt"
         severity="Warning"
-        message="Nested weights are bad for performance"
+        message="This folder configuration (`v24`) is unnecessary; `minSdkVersion` is 24. Merge all the resources in this folder into `drawable`."
         category="Performance"
-        priority="3"
-        summary="Nested layout weights"
-        explanation="Layout weights require a widget to be measured twice. When a LinearLayout with non-zero weights is nested inside another LinearLayout with non-zero weights, then the number of measurements increase exponentially."
-        errorLine1="            android:layout_weight=&quot;1&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        priority="6"
+        summary="Obsolete SDK_INT Version Check"
+        explanation="This check flags version checks that are not necessary, because the `minSdkVersion` (or surrounding known API level) is already at least as high as the version checked for.&#xA;&#xA;Similarly, it also looks for resources in `-vNN` folders, such as `values-v14` where the version qualifier is less than or equal to the `minSdkVersion`, where the contents should be merged into the best folder.">
         <location
-            file="/Users/j-tan/Desktop/Android-lab/SimpleCurrency/app/src/main/res/layout/numpad.xml"
-            line="22"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="NestedWeights"
-        severity="Warning"
-        message="Nested weights are bad for performance"
-        category="Performance"
-        priority="3"
-        summary="Nested layout weights"
-        explanation="Layout weights require a widget to be measured twice. When a LinearLayout with non-zero weights is nested inside another LinearLayout with non-zero weights, then the number of measurements increase exponentially."
-        errorLine1="            android:layout_weight=&quot;1&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="/Users/j-tan/Desktop/Android-lab/SimpleCurrency/app/src/main/res/layout/numpad.xml"
-            line="83"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="NestedWeights"
-        severity="Warning"
-        message="Nested weights are bad for performance"
-        category="Performance"
-        priority="3"
-        summary="Nested layout weights"
-        explanation="Layout weights require a widget to be measured twice. When a LinearLayout with non-zero weights is nested inside another LinearLayout with non-zero weights, then the number of measurements increase exponentially."
-        errorLine1="            android:layout_weight=&quot;1&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="/Users/j-tan/Desktop/Android-lab/SimpleCurrency/app/src/main/res/layout/numpad.xml"
-            line="142"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="NestedWeights"
-        severity="Warning"
-        message="Nested weights are bad for performance"
-        category="Performance"
-        priority="3"
-        summary="Nested layout weights"
-        explanation="Layout weights require a widget to be measured twice. When a LinearLayout with non-zero weights is nested inside another LinearLayout with non-zero weights, then the number of measurements increase exponentially."
-        errorLine1="            android:layout_weight=&quot;1&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="/Users/j-tan/Desktop/Android-lab/SimpleCurrency/app/src/main/res/layout/numpad.xml"
-            line="201"
-            column="13"/>
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/drawable-v24"/>
     </issue>
 
     <issue
         id="Overdraw"
         severity="Warning"
-        message="Possible overdraw: Root element paints background `@color/grey_100` with a theme that also paints a background (inferred theme is `@style/AppTheme`)"
+        message="Possible overdraw: Root element paints background `@android:color/darker_gray` with a theme that also paints a background (inferred theme is `@style/AppTheme`)"
         category="Performance"
         priority="3"
         summary="Overdraw: Painting regions more than once"
         explanation="If you set a background drawable on a root view, then you should use a custom theme where the theme background is null. Otherwise, the theme background will be painted first, only to have your custom background completely cover it; this is called &quot;overdraw&quot;.&#xA;&#xA;NOTE: This detector relies on figuring out which layouts are associated with which activities based on scanning the Java code, and it&apos;s currently doing that using an inexact pattern matching algorithm. Therefore, it can incorrectly conclude which activity the layout is associated with and then wrongly complain that a background-theme is hidden.&#xA;&#xA;If you want your custom background on multiple pages, then you should consider making a custom theme with your custom background and just using that theme instead of a root element background.&#xA;&#xA;Of course it&apos;s possible that your custom drawable is translucent and you want it to be mixed with the background. However, you will get better performance if you pre-mix the background with your drawable and use that resulting image or color as a custom theme background instead."
-        errorLine1="    android:background=&quot;@color/grey_100&quot;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="    android:background=&quot;@android:color/darker_gray&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="/Users/j-tan/Desktop/Android-lab/SimpleCurrency/app/src/main/res/layout/numpad.xml"
-            line="6"
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/activity_auth.xml"
+            line="5"
             column="5"/>
     </issue>
 
     <issue
-        id="TextFields"
+        id="UnusedResources"
         severity="Warning"
-        message="This text field does not specify an `inputType`"
-        category="Usability"
-        priority="5"
-        summary="Missing `inputType`"
-        explanation="Providing an `inputType` attribute on a text field improves usability because depending on the data to be input, optimized keyboards can be shown to the user (such as just digits and parentheses for a phone number). &#xA;&#xA;The lint detector also looks at the `id` of the view, and if the id offers a hint of the purpose of the field (for example, the `id` contains the phrase `phone` or `email`), then lint will also ensure that the `inputType` contains the corresponding type attributes.&#xA;&#xA;If you really want to keep the text field generic, you can suppress this warning by setting `inputType=&quot;text&quot;`."
-        errorLine1="    &lt;EditText"
-        errorLine2="     ~~~~~~~~">
+        message="The resource `R.dimen.content_spacing_vertical` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;dimen name=&quot;content_spacing_vertical&quot;>50dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="/Users/j-tan/Desktop/Android-lab/SimpleCurrency/app/src/main/res/layout/activity_picker.xml"
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/dimens.xml"
+            line="3"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.dimen.content_spacing_horizontal` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;dimen name=&quot;content_spacing_horizontal&quot;>150dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/dimens.xml"
+            line="4"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.drawable.divider` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/drawable/divider.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.drawable.ic_arrow_back` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/drawable/ic_arrow_back.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.drawable.ic_launcher_background` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/drawable/ic_launcher_background.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.drawable.ic_launcher_foreground` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/drawable-v24/ic_launcher_foreground.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.drawable.ic_temp_account` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/drawable/ic_temp_account.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.return_text` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;return_text&quot;>戻る&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
             line="10"
-            column="6"/>
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.random_text` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;random_text&quot;>第十四章 第十二章 手配書 第十七章 . 第十六章 第十三章 第十四章 手配書 第十七章. 第五章 第九章 第六章 第八章. .手配書 第十二章 第十六章 第十四章. 復讐者」. 第二章 第四章 第六章. 第十二章 手配書 第十六章 第十七章 第十九章 第十四章. 第十九章 第十五章 第十七章 第十六章 第十四章. 第五章 第七章 第二章 第八章 第九章. 復讐者」. .手配書 第十八章 第十三章 第十七章 第十一章 第十六章. 第十三章 第十一章 手配書. 復讐者」. 第二章 第八章 第五章 第七章. .復讐者」 伯母さん . 復讐者」. 伯母さん 復讐者」. .伯母さん 復讐者」 . 第七章 第六章 第八章 第十章. 復讐者」. 第四章 第三章 第五章 第八章. 第十章 第九章 第八章 第七章 第五章 第四章. 第十九章 第十五章 第十八章. 復讐者」 伯母さん. 第九章 第四章 第八章 第三章 第七章 第十章. 第四章 第二章 第九章 第五章. 第四章 第六章 第二章. 復讐者」. 第十二章 第十三章 第十八章 手配書 第十一章 第十五章. 復讐者」 . 復讐者」. 復讐者」 伯母さん. 第五章 第九章 第十章 第六章.復讐者」 伯母さん . 第四章 第二章 第九章 第八章. 第三章 第九章 第五章 第六章 第二章 第四章.復讐者」 伯母さん. 第十三章 第十五章 手配書 第十八章 第十二章. 復讐者」 伯母さん. 第十四章 第十五章 手配書. 第十九章 第十二章 第十六章. 復讐者」 伯母さん. 第七章 第九章 第六章 第二章 第八章 第三章. 第十一章 第十八章 第十七章. 第七章 第五章 第九章. 復讐者」. 第四章 第八章 第五章 第十章. 第十三章 第十二章 第十五章 第十七章.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="12"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.worker8_account_error_message` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;worker8_account_error_message&quot;>ご入力いただいたアカウントが見つかりません。&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="23"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.yu_sim_new_number` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;yu_sim_new_number&quot;>&lt;b>新規申し込み&lt;/b>\n&lt;small>新しい電話番号を取得&lt;/small>&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="85"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.font.` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;mnp_reservation_expiry_header&quot;>MNP予約番号の有効期限\n &lt;font color=&apos;red&apos;>&lt;small>お申し込み時点で残りの有効期限が2日以上残っている必要があります。&lt;/small>&lt;/font>&lt;/string>"
+        errorLine2="                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="91"
+            column="65"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="257"
+            column="71"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="263"
+            column="77"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.examination_date_text` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;examination_date_text&quot;>審査日時&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="113"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.credit_number_text` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;credit_number_text&quot;>カード番号&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="114"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.sim_contract_info_title` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;sim_contract_info_title&quot;>SIM申し込み内容&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="157"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.cancel_complete_title` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;cancel_complete_title&quot;>キャンセル完了&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="166"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.email_example_hint` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;email_example_hint&quot;>例）sample@mail.jp&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="188"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.email_confirm_title` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;email_confirm_title&quot;>メールアドレス（確認）&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="189"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.email_title` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;email_title&quot;>メールアドレス&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="190"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.device_header` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;device_header&quot;>端末&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="211"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.device_maker_name` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;device_maker_name&quot;>メーカー名&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="213"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.cancel` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;cancel&quot;>キャンセル&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="215"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.add_button` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="    &lt;string name=&quot;add_button&quot;>+追加&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/values/strings.xml"
+            line="217"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.layout.view_device_input` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+        errorLine1="&lt;layout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_device_input.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        severity="Warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details"
+        category="Usability:Icons"
+        priority="6"
+        summary="The launcher icon shape should use a distinct silhouette"
+        explanation="According to the Android Design Guide (http://developer.android.com/design/style/iconography.html) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square."
+        url="http://developer.android.com/design/style/iconography.html"
+        urls="http://developer.android.com/design/style/iconography.html">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-hdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        severity="Warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details"
+        category="Usability:Icons"
+        priority="6"
+        summary="The launcher icon shape should use a distinct silhouette"
+        explanation="According to the Android Design Guide (http://developer.android.com/design/style/iconography.html) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square."
+        url="http://developer.android.com/design/style/iconography.html"
+        urls="http://developer.android.com/design/style/iconography.html">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-mdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        severity="Warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details"
+        category="Usability:Icons"
+        priority="6"
+        summary="The launcher icon shape should use a distinct silhouette"
+        explanation="According to the Android Design Guide (http://developer.android.com/design/style/iconography.html) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square."
+        url="http://developer.android.com/design/style/iconography.html"
+        urls="http://developer.android.com/design/style/iconography.html">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-xhdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        severity="Warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details"
+        category="Usability:Icons"
+        priority="6"
+        summary="The launcher icon shape should use a distinct silhouette"
+        explanation="According to the Android Design Guide (http://developer.android.com/design/style/iconography.html) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square."
+        url="http://developer.android.com/design/style/iconography.html"
+        urls="http://developer.android.com/design/style/iconography.html">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        severity="Warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details"
+        category="Usability:Icons"
+        priority="6"
+        summary="The launcher icon shape should use a distinct silhouette"
+        explanation="According to the Android Design Guide (http://developer.android.com/design/style/iconography.html) your launcher icons should &quot;use a distinct silhouette&quot;, a &quot;three-dimensional, front view, with a slight perspective as if viewed from above, so that users perceive some depth.&quot;&#xA;&#xA;The unique silhouette implies that your launcher icon should not be a filled square."
+        url="http://developer.android.com/design/style/iconography.html"
+        urls="http://developer.android.com/design/style/iconography.html">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconDipSize"
+        severity="Warning"
+        message="The image `ic_launcher.png` varies significantly in its density-independent (dip) size across the various density versions: mipmap-hdpi/ic_launcher.png: 341x341 dp (512x512 px), mipmap-mdpi/ic_launcher.png: 512x512 dp (512x512 px), mipmap-xhdpi/ic_launcher.png: 256x256 dp (512x512 px), mipmap-xxhdpi/ic_launcher.png: 171x171 dp (512x512 px), mipmap-xxxhdpi/ic_launcher.png: 128x128 dp (512x512 px)"
+        category="Usability:Icons"
+        priority="5"
+        summary="Icon density-independent size validation"
+        explanation="Checks the all icons which are provided in multiple densities, all compute to roughly the same density-independent pixel (`dip`) size. This catches errors where images are either placed in the wrong folder, or icons are changed to new sizes but some folders are forgotten.">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-xhdpi/ic_launcher.png"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-hdpi/ic_launcher.png"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-mdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicatesConfig"
+        severity="Warning"
+        message="The `ic_launcher.png` icon has identical contents in the following configuration folders: mipmap-hdpi, mipmap-mdpi, mipmap-xhdpi, mipmap-xxhdpi, mipmap-xxxhdpi"
+        category="Usability:Icons"
+        priority="5"
+        summary="Identical bitmaps across various configurations"
+        explanation="If an icon is provided under different configuration parameters such as `drawable-hdpi` or `-v11`, they should typically be different. This detector catches cases where the same icon is provided in different configuration folder which is usually not intentional.">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-xhdpi/ic_launcher.png"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-mdpi/ic_launcher.png"/>
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/mipmap-hdpi/ic_launcher.png"/>
     </issue>
 
     <issue
@@ -141,12 +1561,156 @@
         explanation="Specify an `autofillHints` attribute when targeting SDK version 26 or higher or explicitly specify that the view is not important for autofill. Your app can help an autofill service classify the data correctly by providing the meaning of each view that could be autofillable, such as views representing usernames, passwords, credit card fields, email addresses, etc.&#xA;&#xA;The hints can have any value, but it is recommended to use predefined values like &apos;username&apos; for a username or &apos;creditCardNumber&apos; for a credit card number. For a list of all predefined autofill hint constants, see the `AUTOFILL_HINT_` constants in the `View` reference at https://developer.android.com/reference/android/view/View.html.&#xA;&#xA;You can mark a view unimportant for autofill by specifying an `importantForAutofill` attribute on that view or a parent view. See https://developer.android.com/reference/android/view/View.html#setImportantForAutofill(int)."
         url="https://developer.android.com/guide/topics/text/autofill.html"
         urls="https://developer.android.com/guide/topics/text/autofill.html"
-        errorLine1="    &lt;EditText"
-        errorLine2="     ~~~~~~~~">
+        errorLine1="        &lt;EditText"
+        errorLine2="         ~~~~~~~~">
         <location
-            file="/Users/j-tan/Desktop/Android-lab/SimpleCurrency/app/src/main/res/layout/activity_picker.xml"
-            line="10"
-            column="6"/>
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_registration_user_address.xml"
+            line="108"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        severity="Warning"
+        message="Missing `contentDescription` attribute on image"
+        category="Accessibility"
+        priority="3"
+        summary="Image without `contentDescription`"
+        explanation="Non-textual widgets like ImageViews and ImageButtons should use the `contentDescription` attribute to specify a textual description of the widget such that screen readers and other accessibility tools can adequately describe the user interface.&#xA;&#xA;Note that elements in application screens that are purely decorative and do not provide any content or enable a user action should not have accessibility content descriptions. In this case, just suppress the lint warning with a tools:ignore=&quot;ContentDescription&quot; attribute.&#xA;&#xA;Note that for text fields, you should not set both the `hint` and the `contentDescription` attributes since the hint will never be shown. Just set the `hint`. See http://developer.android.com/guide/topics/ui/accessibility/checklist.html#special-cases."
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/item_application_record.xml"
+            line="154"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        severity="Warning"
+        message="Missing `contentDescription` attribute on image"
+        category="Accessibility"
+        priority="3"
+        summary="Image without `contentDescription`"
+        explanation="Non-textual widgets like ImageViews and ImageButtons should use the `contentDescription` attribute to specify a textual description of the widget such that screen readers and other accessibility tools can adequately describe the user interface.&#xA;&#xA;Note that elements in application screens that are purely decorative and do not provide any content or enable a user action should not have accessibility content descriptions. In this case, just suppress the lint warning with a tools:ignore=&quot;ContentDescription&quot; attribute.&#xA;&#xA;Note that for text fields, you should not set both the `hint` and the `contentDescription` attributes since the hint will never be shown. Just set the `hint`. See http://developer.android.com/guide/topics/ui/accessibility/checklist.html#special-cases."
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_card_photo_edit.xml"
+            line="50"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        severity="Warning"
+        message="Missing `contentDescription` attribute on image"
+        category="Accessibility"
+        priority="3"
+        summary="Image without `contentDescription`"
+        explanation="Non-textual widgets like ImageViews and ImageButtons should use the `contentDescription` attribute to specify a textual description of the widget such that screen readers and other accessibility tools can adequately describe the user interface.&#xA;&#xA;Note that elements in application screens that are purely decorative and do not provide any content or enable a user action should not have accessibility content descriptions. In this case, just suppress the lint warning with a tools:ignore=&quot;ContentDescription&quot; attribute.&#xA;&#xA;Note that for text fields, you should not set both the `hint` and the `contentDescription` attributes since the hint will never be shown. Just set the `hint`. See http://developer.android.com/guide/topics/ui/accessibility/checklist.html#special-cases."
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_deletable_photo.xml"
+            line="16"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        severity="Warning"
+        message="Missing `contentDescription` attribute on image"
+        category="Accessibility"
+        priority="3"
+        summary="Image without `contentDescription`"
+        explanation="Non-textual widgets like ImageViews and ImageButtons should use the `contentDescription` attribute to specify a textual description of the widget such that screen readers and other accessibility tools can adequately describe the user interface.&#xA;&#xA;Note that elements in application screens that are purely decorative and do not provide any content or enable a user action should not have accessibility content descriptions. In this case, just suppress the lint warning with a tools:ignore=&quot;ContentDescription&quot; attribute.&#xA;&#xA;Note that for text fields, you should not set both the `hint` and the `contentDescription` attributes since the hint will never be shown. Just set the `hint`. See http://developer.android.com/guide/topics/ui/accessibility/checklist.html#special-cases."
+        errorLine1="            &lt;ImageButton"
+        errorLine2="             ~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_sim_additional_input.xml"
+            line="222"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        severity="Warning"
+        message="Missing `contentDescription` attribute on image"
+        category="Accessibility"
+        priority="3"
+        summary="Image without `contentDescription`"
+        explanation="Non-textual widgets like ImageViews and ImageButtons should use the `contentDescription` attribute to specify a textual description of the widget such that screen readers and other accessibility tools can adequately describe the user interface.&#xA;&#xA;Note that elements in application screens that are purely decorative and do not provide any content or enable a user action should not have accessibility content descriptions. In this case, just suppress the lint warning with a tools:ignore=&quot;ContentDescription&quot; attribute.&#xA;&#xA;Note that for text fields, you should not set both the `hint` and the `contentDescription` attributes since the hint will never be shown. Just set the `hint`. See http://developer.android.com/guide/topics/ui/accessibility/checklist.html#special-cases."
+        errorLine1="            &lt;ImageButton"
+        errorLine2="             ~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_sim_additional_input.xml"
+            line="264"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;1&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;1&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_sim_card_display.xml"
+            line="17"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;2&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;2&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_sim_card_display.xml"
+            line="27"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;3&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;3&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_sim_card_display.xml"
+            line="39"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="Hardcoded string &quot;4&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait) you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:text=&quot;4&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~">
+        <location
+            file="/Users/j-tan/Desktop/Android-lab/worker8/FakeApplication/app/src/main/res/layout/view_sim_card_display.xml"
+            line="49"
+            column="9"/>
     </issue>
 
 </issues>
