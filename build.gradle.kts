@@ -1,6 +1,6 @@
 plugins {
     `java-gradle-plugin`
-    id("com.gradle.plugin-publish") version "0.10.1"
+    id("com.gradle.plugin-publish") version "0.11.0"
     id("org.jetbrains.kotlin.jvm") version "1.3.61"
 }
 
@@ -12,7 +12,7 @@ object Constant {
     val pluginName = "AndroidLintReporterPlugin"
     val id = "com.worker8.android_lint_reporter"
     val implementationClass = "android_lint_reporter.AndroidLintReporterPlugin"
-    val version = "1.0.1"
+    val version = "1.1.0"
     val website = "https://github.com/worker8/AndroidLintReporter"
     val displayName = "Android Lint Reporter"
     val description = "Gradle Plugin to parse, format, report Android Lint result back to Github Pull Request using Github Actions"

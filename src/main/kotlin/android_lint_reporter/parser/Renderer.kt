@@ -23,14 +23,19 @@ object Renderer {
 
         val currentPath = File("").getAbsolutePath()
         issues.warningList.forEach { issue ->
-            warningBody += """| <details><summary>${issue.location.file.replace(
-                "${currentPath}/",
+            val locationString = if (issue.location.line.isBlank() && issue.location.column.isBlank()) {
                 ""
-            )} **L${issue.location.line}:${issue.location.column}**</summary> `${issue.errorLine1}`</details> | <details> <summary>${issue.message}</summary> <br>_${issue.explanation.removeNewLine()}_</details>|\n"""
+            } else {
+                "**L${issue.location.line}:${issue.location.column} **"
+            }
+            warningBody += """| <details><summary>${issue.location.file.replace(
+                    "${currentPath}/",
+                    ""
+            )} ${locationString}</summary> `${issue.errorLine1}`</details> | <details> <summary>${issue.summary}</summary> <br>_${issue.explanation.removeNewLine()}_</details>|\n"""
         }
 
         warningBody =
-            warningBody.replace("XXwarning_numberXX", issues.warningList.count().toString())
+                warningBody.replace("XXwarning_numberXX", issues.warningList.count().toString())
         errorBody = errorBody.replace("XXerror_numberXX", issues.errorList.count().toString())
         errorBody += "</details>"
         var bodyString = ""
