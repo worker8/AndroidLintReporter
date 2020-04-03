@@ -8,12 +8,27 @@ repositories {
     jcenter()
 }
 
+object Constant {
+    val pluginName = "AndroidLintReporterPlugin"
+    val id = "com.worker8.android_lint_reporter"
+    val implementationClass = "android_lint_reporter.AndroidLintReporterPlugin"
+    val version = "1.0.1"
+    val website = "https://github.com/worker8/AndroidLintReporter"
+    val displayName = "Android Lint Reporter"
+    val description = "Gradle Plugin to parse, format, report Android Lint result back to Github Pull Request using Github Actions"
+    val tags = listOf("android", "lint", "github-actions")
+}
+
+object Version {
+    val retrofit = "2.6.1"
+}
+
 dependencies {
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
 
-    implementation("com.squareup.retrofit2:retrofit:2.6.1")
-    implementation("com.squareup.retrofit2:converter-moshi:2.6.1")
+    implementation("com.squareup.retrofit2:retrofit:${Version.retrofit}")
+    implementation("com.squareup.retrofit2:converter-moshi:${Version.retrofit}")
 
     // Use the Kotlin JDK 8 standard library.
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -47,19 +62,18 @@ val check by tasks.getting(Task::class) {
 
 gradlePlugin {
     plugins {
-        create("AndroidLintReporterPlugin") {
-            id = "com.worker8.android_lint_reporter"
-            implementationClass = "android_lint_reporter.AndroidLintReporterPlugin"
-//            displayName = "worker8GreetingsPlugin display name"
-            version = "1.0.0"
+        create(Constant.pluginName) {
+            id = Constant.id
+            implementationClass = Constant.implementationClass
+            version = Constant.version
         }
     }
 }
 
 pluginBundle {
     // These settings are set for the whole plugin bundle
-    website = "https://github.com/worker8/AndroidLintReporter"
-    vcsUrl = "https://github.com/worker8/AndroidLintReporter"
+    website = Constant.website
+    vcsUrl = Constant.website
     // tags and description can be set for the whole bundle here, but can also
     // be set / overridden in the config for specific plugins
     //description = "Just a friendly description for my learning!"
@@ -82,12 +96,12 @@ pluginBundle {
     (plugins) {
 
         // first plugin
-        "AndroidLintReporterPlugin" {
+        Constant.pluginName {
             // id is captured from java-gradle-plugin configuration
-            description = "Gradle Plugin to parse, format, report Android Lint result back to Github Pull Request using Github Actions"
-            tags = listOf("android", "lint", "github-actions")
-            version = "1.0.0"
-            displayName = "Android Lint Reporter"
+            description = Constant.description
+            tags = Constant.tags
+            version = Constant.version
+            displayName = Constant.displayName
         }
     }
 }
