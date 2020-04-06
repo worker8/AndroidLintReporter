@@ -35,15 +35,17 @@ Note: The task `parseAndSendLintResult` is provided by this plugin!
 <details>
 <summary>
 4. This will produce this lint report and it will be reported back in the Pull Request:
+  - then you can fix the lint warnings and push again
 </summary>
 <br>
 <img width="1057" src="https://user-images.githubusercontent.com/1988156/77041453-4a280300-69fd-11ea-84fa-4d41c666b219.png">
 </details>
 
 ## How to Setup
-There are many a couple of steps needed to setup everything.
+There are a couple of steps needed to setup everything.
 
 **1. Github Actions**
+
 First, we need to setup a a Github Action trigger to run lint and the gradle task provided by this plugin.
 
 Add a file in `.github/workflows/run-lint.yml` in the root of your project:
@@ -77,25 +79,55 @@ jobs:
         run: |
           ./gradlew lint && ./gradlew parseAndSendLintResult -PgithubPullRequestId=$PR_NUMBER -PgithubToken=$GITHUB_TOKEN
 ```
+<details>
+<summary>
+How to get Github Token
+</summary><br>
+
+1. Go to Github's `Settings --> Developer settings --> Generate` new token.
+
+<img width="253" alt="Screen Shot 2020-03-19 at 16 13 44" src="https://user-images.githubusercontent.com/1988156/77043730-7d6c9100-6a01-11ea-9436-bde64c9acff0.png">
+
+2. Go to Personal Access Token, and click `Generate new token`:
+  - Check for **Repo (all)** and **workflow**
+  
+<img width="1045" alt="Screen Shot 2020-03-19 at 16 14 18" src="https://user-images.githubusercontent.com/1988156/77043750-89585300-6a01-11ea-9214-735db0958aab.png">
+
+3. It's better to make a bot account and use the token of the bot account
+
+</details>
+<br>
 
 <details>
 <summary>
-how to get GITHUB_TOKEN
+How to add GITHUB_TOKEN
 </summary>
-`GITHUB_TOKEN` can be obtained through these steps:
-  
-1. Go to Github's Settings --> Developer settings --> Generate new token.
-2. Check for **Repo (all)** and **workflow**
 
-After generating the token, paste it here:
+After generating the token, paste it under `Settings --> Secrets`:
 
 ![image](https://user-images.githubusercontent.com/1988156/77247261-a5166000-6c72-11ea-88b8-ab59c96c66e1.png)
 
 </details>
 
+2a. Add repositories and classpath:
 
+- `build.gradle`:
+**Groovy**
 
-2a. In `build.gradle`, setup this:
+```
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "gradle.plugin.com.worker8.android_lint_reporter:android_lint_reporter:<latest_version>"
+  }
+}
+```
+
+**Kotlin**
 
 ```
 buildscript {
@@ -105,16 +137,22 @@ buildscript {
     }
   }
   dependencies {
-    classpath("gradle.plugin.com.worker8.android_lint_reporter:android_lint_reporter:1.0.1")
+    classpath("gradle.plugin.com.worker8.android_lint_reporter:android_lint_reporter:<latest_version>")
   }
 }
 ```
 
-2b. In `app/build.gradle`, setup the plugin:
+Note: `latest_version` can be found here: https://plugins.gradle.org/plugin/com.worker8.android_lint_reporter
+
+2b. Add the plugin dependency:
+
+- `app/build.gradle`:
+
+**Groovy**
 
 ```
 plugins {
-    id('com.worker8.android_lint_reporter')
+    id "com.worker8.android_lint_reporter"
 }
 android_lint_reporter {
     lintFilePath = "./app/build/reports/lint-results.xml"
@@ -123,11 +161,13 @@ android_lint_reporter {
 }
 ```
 
-`build.gradle.kts` (if you're using kotlin):
+**Kotlin**
+
+`app/build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id('com.worker8.android_lint_reporter')
+    id("com.worker8.android_lint_reporter")
 }
 android_lint_reporter {
     lintFilePath = "./src/main/resources/lint-results.xml"
@@ -136,21 +176,4 @@ android_lint_reporter {
 }
 ```
 
-<details>
-<summary>
-Github Token can be obtained by using these steps:
-</summary><br>
-
-1. Go to account settings in Github
-2. Go to Developer Settings
-<img width="253" alt="Screen Shot 2020-03-19 at 16 13 44" src="https://user-images.githubusercontent.com/1988156/77043730-7d6c9100-6a01-11ea-9436-bde64c9acff0.png">
-
-3. Go to Personal Access Token, and click `Generate new token`:
-
-<img width="1045" alt="Screen Shot 2020-03-19 at 16 14 18" src="https://user-images.githubusercontent.com/1988156/77043750-89585300-6a01-11ea-9214-735db0958aab.png">
-
-4. It's better to make a bot account and use the token of the bot account
-</details>
-<br>
-
-3. After adding this, you should be ready! Try making a pull request, and you should see the Github Actions running under "Check" tab. When it's done, you should see your lint report being posted back to your pull request.
+3. You are ready! Try making a pull request, and you should see the Github Actions running under "Check" tab. When it's done, you should see your lint report being posted back to your pull request.
