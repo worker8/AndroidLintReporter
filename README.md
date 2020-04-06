@@ -3,7 +3,6 @@ This is a Gradle Plugin to parse, format, report Android Lint result back to Git
 
 Here is how it works.
 
-
 <details>
 <summary>
 1. When a Pull Request is created:
@@ -44,7 +43,7 @@ Note: The task `parseAndSendLintResult` is provided by this plugin!
 ## How to Setup
 There are a couple of steps needed to setup everything.
 
-**1. Github Actions**
+#### 1. Github Actions
 
 First, we need to setup a a Github Action trigger to run lint and the gradle task provided by this plugin.
 
@@ -109,9 +108,10 @@ After generating the token, paste it under `Settings --> Secrets`:
 
 </details>
 
-2a. Add repositories and classpath:
+#### 2a. Add repositories and classpath:
 
 - `build.gradle`:
+
 **Groovy**
 
 ```
@@ -144,7 +144,7 @@ buildscript {
 
 Note: `latest_version` can be found here: https://plugins.gradle.org/plugin/com.worker8.android_lint_reporter
 
-2b. Add the plugin dependency:
+#### 2b. Add the plugin dependency:
 
 - `app/build.gradle`:
 
@@ -176,4 +176,6 @@ android_lint_reporter {
 }
 ```
 
-3. You are ready! Try making a pull request, and you should see the Github Actions running under "Check" tab. When it's done, you should see your lint report being posted back to your pull request.
+#### 3. You are ready! 
+
+Try making a pull request, and you should see the Github Actions running under "Check" tab. When it's done, you should see your lint report being posted back to your pull request.
