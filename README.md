@@ -108,7 +108,7 @@ After generating the token, paste it under `Settings --> Secrets`:
 
 </details>
 
-#### 2a. Add repositories and classpath:
+### 2. Add repositories and classpath:
 
 - `build.gradle`:
 
@@ -144,7 +144,7 @@ buildscript {
 
 Note: `latest_version` can be found here: https://plugins.gradle.org/plugin/com.worker8.android_lint_reporter
 
-#### 2b. Add the plugin dependency:
+### 3. Add the plugin dependency:
 
 - `app/build.gradle`:
 
@@ -163,8 +163,6 @@ android_lint_reporter {
 
 **Kotlin**
 
-`app/build.gradle.kts`:
-
 ```kotlin
 plugins {
     id("com.worker8.android_lint_reporter")
@@ -176,6 +174,6 @@ android_lint_reporter {
 }
 ```
 
-#### 3. You are ready! 
+### 4. You are ready! 
 
 Try making a pull request, and you should see the Github Actions running under "Check" tab. When it's done, you should see your lint report being posted back to your pull request.
