@@ -2,7 +2,7 @@
 
 # AndroidLintReporter ![](https://img.shields.io/badge/latest-1.1.2-blue)
 
-<img width="400" alt="Android Lint Reporter" src="https://user-images.githubusercontent.com/1988156/79047371-1c775800-7c51-11ea-83dd-9cf69ac3187d.png">
+<img width="300" alt="Android Lint Reporter Logo" src="https://user-images.githubusercontent.com/1988156/79091365-fc968000-7d87-11ea-997d-2a0fa1f6ec5a.png">
 
 This is a Gradle Plugin to parse, format, report Android Lint result back to Github Pull Request using Github Actions. This is targetted for someone who's doing Android Development and using Github who wants to run lint on their pull request.
 
