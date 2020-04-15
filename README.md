@@ -182,3 +182,27 @@ android_lint_reporter {
 ### 4. You are ready! 
 
 Try making a pull request, and you should see the Github Actions running under "Check" tab. When it's done, you should see your lint report being posted back to your pull request.
+
+
+## Development
+For those who is interested to contribute or fork it. Here's a blog post I wrote explaining the source code of this repo:
+https://bloggie.io/@_junrong/the-making-of-android-lint-reporter
+
+
+## License
+
+```
+Copyright 2020 Tan Jun Rong
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
