@@ -173,7 +173,7 @@ plugins {
     id("com.worker8.android_lint_reporter")
 }
 android_lint_reporter {
-    lintFilePath = "./src/main/resources/lint-results.xml"
+    lintFilePath = "./app/build/reports/lint-results.xml"
     githubUsername = "worker8"
     githubRepositoryName = "AndroidLintReporter"
 }
