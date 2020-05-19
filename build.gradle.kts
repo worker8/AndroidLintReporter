@@ -2,6 +2,7 @@ plugins {
     `java-gradle-plugin`
     id("com.gradle.plugin-publish") version "0.11.0"
     id("org.jetbrains.kotlin.jvm") version "1.3.61"
+    kotlin("kapt") version "1.3.61"
 }
 
 repositories {
@@ -12,7 +13,7 @@ object Constant {
     val pluginName = "AndroidLintReporterPlugin"
     val id = "com.worker8.android_lint_reporter"
     val implementationClass = "android_lint_reporter.AndroidLintReporterPlugin"
-    val version = "1.1.2"
+    val version = "1.1.3"
     val website = "https://github.com/worker8/AndroidLintReporter"
     val displayName = "Android Lint Reporter"
     val description = "Gradle Plugin to parse, format, report Android Lint result back to Github Pull Request using Github Actions"
@@ -20,12 +21,15 @@ object Constant {
 }
 
 object Version {
-    val retrofit = "2.6.1"
+    val retrofit = "2.8.2"
+    val moshi = "1.9.2"
 }
 
 dependencies {
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation("com.squareup.moshi:moshi-kotlin:${Version.moshi}")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:${Version.moshi}")
 
     implementation("com.squareup.retrofit2:retrofit:${Version.retrofit}")
     implementation("com.squareup.retrofit2:converter-moshi:${Version.retrofit}")

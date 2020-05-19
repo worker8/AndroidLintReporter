@@ -1,3 +1,6 @@
 package android_lint_reporter.github
 
-data class GithubCommentResponse(val id: String, val url: String)
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class GithubCommentResponse(val id: Long, val url: String)
