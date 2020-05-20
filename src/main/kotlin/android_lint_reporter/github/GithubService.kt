@@ -22,7 +22,7 @@ class GithubService(
     }
 
     companion object {
-        const val GithubApiBaseUrl = "https://api.github.com"
+        private const val GithubApiBaseUrl = "https://api.github.com"
         fun create(
             githubToken: String,
             username: String,
