@@ -188,6 +188,24 @@ Try making a pull request, and you should see the Github Actions running under "
 For those who is interested to contribute or fork it. Here's a blog post I wrote explaining the source code of this repo:
 https://bloggie.io/@_junrong/the-making-of-android-lint-reporter
 
+IDE for development:
+Download Intellij Community Edition for free and open this project.
+
+To run the test, use this command:
+
+```
+./gradlew functionalTest
+```
+
+Testing Github API response using cURL:
+```
+curl -H "Authorization: token <GITHUB_TOKEN>" -H "Content-Type: application/json" --data '{"body":"test123abc"}' -X POST https://api.github.com/repos/<GITHUB_USER>/<GITHUB_PROJECT>/issues/<PR_OR_ISSUE_NUMBER>/comments
+```
+
+To deploy:
+1. Download secrets from https://plugins.gradle.org/ after login.
+2. up version in `build.gradle.kts`
+3. then run `./gradlew publishPlugin`
 
 ## License
 
