@@ -50,7 +50,7 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                     println("Lint result is posted to https://github.com/${extension.githubUsername}/${extension.githubRepositoryName}/${githubPullRequestId}!")
                 } else {
                     println("An error has occurred... ")
-                    println("code: ${response.code()}, message: ${response.message()}, body: ${response.errorBody()}")
+                    println("response code: ${response.code()}, message: ${response.message()}, body: ${response.errorBody()?.string()}")
                 }
             }
         }
