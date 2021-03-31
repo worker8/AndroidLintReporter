@@ -13,7 +13,8 @@ class AndroidLintReporterPluginFunctionalTest {
     @Test
     fun `can run task`() {
         // Setup the test build
-        val projectDir = File("build/functionalTest")
+        val projectDir = File("./build/functionalTest")
+
         projectDir.mkdirs()
         projectDir.resolve("settings.gradle").writeText("")
         projectDir.resolve("build.gradle").writeText("""
@@ -21,7 +22,7 @@ class AndroidLintReporterPluginFunctionalTest {
                 id('com.worker8.android_lint_reporter')
             }
             android_lint_reporter {
-                lintFilePath = "./src/main/resources/lint-results.xml"
+                lintFilePath = "${File("").absolutePath}/src/main/resources/lint-results.xml"
                 githubUsername = "worker8"
                 githubRepositoryName = "SimpleCurrency"
             }

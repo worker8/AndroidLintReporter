@@ -23,8 +23,8 @@ class AndroidLintReporterPlugin : Plugin<Project> {
             task.doLast {
                 println("received extension: ${extension.githubUsername}/${extension.githubRepositoryName}")
                 val projectProperties = project.properties
-                val githubPullRequestId = projectProperties.get("githubPullRequestId") as String
-                val githubToken = projectProperties.get("githubToken") as String
+                val githubPullRequestId = projectProperties["githubPullRequestId"] as String
+                val githubToken = projectProperties["githubToken"] as String
                 // for debugging path
 //                val fileTreeWalk = File("./").walkTopDown()
 //                fileTreeWalk.forEach {
