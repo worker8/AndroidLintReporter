@@ -18,7 +18,6 @@ open class AndroidLintReporterPluginExtension(
 class AndroidLintReporterPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create("android_lint_reporter", AndroidLintReporterPluginExtension::class.java)
-
         project.tasks.register("parseAndSendLintResult") { task ->
             task.doLast {
                 println("received extension: ${extension.githubUsername}/${extension.githubRepositoryName}")
@@ -32,7 +31,10 @@ class AndroidLintReporterPlugin : Plugin<Project> {
 //                        println("path: ${it.absolutePath}")
 //                    }
 //                }
-
+                if (extension.lintFilePath.length > 1 && extension.lintFilePath[0] == '.') {
+                    // example: this is to replace "./src/main/resources/lint-results.xml" into "<projectDir>/src/main/resources/lint-results.xml"
+                    extension.lintFilePath = "${project.projectDir.absolutePath}${extension.lintFilePath.substring(1)}"
+                }
                 val issues = Parser.parse(File(extension.lintFilePath))
                 val bodyString = Renderer.render(issues)
 
