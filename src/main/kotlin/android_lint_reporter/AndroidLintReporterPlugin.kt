@@ -45,7 +45,10 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                         pullRequestId = githubPullRequestId
                 )
 
-                val response = service.postComment(bodyString).execute()
+                // escape single backslash, which will cause json parsing to fail
+                val regex = """\\(?!n)""".toRegex() // only escape backslash that doesn't followed by 'n', cause we want to keep '\n'
+                val escapedString = regex.replace(bodyString, "")
+                val response = service.postComment(escapedString).execute()
                 if (response.isSuccessful) {
                     println("Lint result is posted to https://github.com/${extension.githubUsername}/${extension.githubRepositoryName}/${githubPullRequestId}!")
                 } else {
