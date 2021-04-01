@@ -1,6 +1,6 @@
 
 
-# AndroidLintReporter [![](https://img.shields.io/badge/latest-1.1.3-blue)](https://plugins.gradle.org/plugin/com.worker8.android_lint_reporter) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# AndroidLintReporter [![](https://img.shields.io/badge/latest-1.1.5-blue)](https://plugins.gradle.org/plugin/com.worker8.android_lint_reporter) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <img width="300" alt="Android Lint Reporter Logo" src="https://user-images.githubusercontent.com/1988156/79091365-fc968000-7d87-11ea-997d-2a0fa1f6ec5a.png">
 
