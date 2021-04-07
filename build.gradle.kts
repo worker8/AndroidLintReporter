@@ -13,7 +13,7 @@ object Constant {
     val pluginName = "AndroidLintReporterPlugin"
     val id = "com.worker8.android_lint_reporter"
     val implementationClass = "android_lint_reporter.AndroidLintReporterPlugin"
-    val version = "1.1.5"
+    val version = "2.0.0"
     val website = "https://github.com/worker8/AndroidLintReporter"
     val displayName = "Android Lint Reporter"
     val description = "Gradle Plugin to parse, format, report Android Lint result back to Github Pull Request using Github Actions"
@@ -39,6 +39,7 @@ dependencies {
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation(gradleTestKit())
 
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
@@ -58,6 +59,8 @@ val functionalTest by tasks.creating(Test::class) {
     testClassesDirs = functionalTestSourceSet.output.classesDirs
     classpath = functionalTestSourceSet.runtimeClasspath
 }
+
+//tasks.create<SystemProcess>("hoodwink")
 
 val check by tasks.getting(Task::class) {
     // Run the functional tests as part of `check`
@@ -109,3 +112,10 @@ pluginBundle {
         }
     }
 }
+
+//open class SystemProcess @Inject constructor(): DefaultTask() {
+//    @TaskAction
+//    fun runCommand() {
+//        println("aSJKDLjSDKLsj: ${gradle.gradleHomeDir}")
+//    }
+//}
