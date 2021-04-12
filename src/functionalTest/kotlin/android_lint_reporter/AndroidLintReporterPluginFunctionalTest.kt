@@ -36,8 +36,8 @@ class AndroidLintReporterPluginFunctionalTest {
             }
             android_lint_reporter {
                 lintFilePath = "${File("").absolutePath}/src/main/resources/lint-results.xml" 
-                githubUsername = "u-next"
-                githubRepositoryName = "UNextAndroid"
+                githubUsername = "worker8"
+                githubRepositoryName = "SimpleCurrency"
             }
         """)
 

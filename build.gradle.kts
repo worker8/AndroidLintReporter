@@ -39,7 +39,6 @@ dependencies {
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation(gradleTestKit())
 
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
@@ -59,8 +58,6 @@ val functionalTest by tasks.creating(Test::class) {
     testClassesDirs = functionalTestSourceSet.output.classesDirs
     classpath = functionalTestSourceSet.runtimeClasspath
 }
-
-//tasks.create<SystemProcess>("hoodwink")
 
 val check by tasks.getting(Task::class) {
     // Run the functional tests as part of `check`
@@ -112,10 +109,3 @@ pluginBundle {
         }
     }
 }
-
-//open class SystemProcess @Inject constructor(): DefaultTask() {
-//    @TaskAction
-//    fun runCommand() {
-//        println("aSJKDLjSDKLsj: ${gradle.gradleHomeDir}")
-//    }
-//}

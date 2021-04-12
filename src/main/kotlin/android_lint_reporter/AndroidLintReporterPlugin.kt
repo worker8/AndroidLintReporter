@@ -30,7 +30,7 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                 val githubToken = projectProperties["githubToken"] as String
                 val projectRootDir = if (DEBUG) {
                     // replace this with your CI root environment for testing
-                    "/home/runner/work/UNextAndroid/UNextAndroid/"
+                    "/home/runner/work/SimpleCurrency/SimpleCurrency/"
                 } else {
                     project.rootProject.projectDir
                 }
@@ -122,6 +122,7 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                                                     path = issue.location.file.replace("${projectRootDir}/", ""),
                                                     commitId = lastCommitId
                                             ).execute()
+
                                         }
                                     } catch (e: Exception) {
                                         e.printStackTrace()
