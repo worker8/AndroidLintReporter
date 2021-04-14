@@ -215,12 +215,13 @@ To run the test, use this command:
 ./gradlew functionalTest
 ```
 
-
-
 To deploy:
 1. Download secrets from https://plugins.gradle.org/ after login.
 2. up version in `build.gradle.kts`
 3. then run `./gradlew publishPlugin`
+
+## Changelog
+Refer to https://github.com/worker8/AndroidLintReporter/releases
 
 ## License
 
