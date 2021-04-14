@@ -1,5 +1,8 @@
 package android_lint_reporter.github
 
+import android_lint_reporter.model.GithubComment
+import android_lint_reporter.model.GithubCommit
+import android_lint_reporter.model.GithubUser
 import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
 import okhttp3.RequestBody
@@ -8,49 +11,81 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class GithubService(
-    val service: GithubServiceInterface,
-    val username: String,
-    val repoName: String,
-    val pullRequestId: String
+        val service: GithubServiceInterface,
+        val username: String,
+        val repoName: String,
+        val pullRequestId: String
 ) {
+    fun getUser(): Call<GithubUser> {
+        return service.getUser()
+    }
+
     fun postComment(bodyString: String): Call<GithubCommentResponse> {
         val requestBody = RequestBody.create(
-            okhttp3.MediaType.parse("application/json"),
-            "{\"body\":\"${bodyString}\"}"
+                okhttp3.MediaType.parse("application/json"),
+                "{\"body\":\"${bodyString}\"}"
         )
         return service.postComment(username, repoName, pullRequestId, requestBody)
+    }
+
+    fun postReviewComment(bodyString: String, lineNumber: Int, path: String, commitId: String): Call<GithubCommentResponse> {
+        val requestBody = RequestBody.create(
+                okhttp3.MediaType.parse("application/json"),
+                """{
+                    "body": "$bodyString",
+                    "line": $lineNumber,
+                    "side": "RIGHT",
+                    "position": 1,
+                    "path": "$path",
+                    "commit_id": "$commitId"
+                   } 
+                """.trimIndent()
+        )
+        return service.postReviewComment(username, repoName, pullRequestId, requestBody)
+    }
+
+    fun getPullRequestFiles(): Call<List<GithubPullRequestFilesResponse>> {
+        return service.getPullRequestFiles(username, repoName, pullRequestId)
+    }
+
+    fun getPullRequestComments(): Call<List<GithubComment>> {
+        return service.getPullRequestComments(username, repoName, pullRequestId)
+    }
+
+    fun getPullRequestCommits(): Call<List<GithubCommit>> {
+        return service.getPullRequestCommits(username, repoName, pullRequestId)
     }
 
     companion object {
         private const val GithubApiBaseUrl = "https://api.github.com"
         fun create(
-            githubToken: String,
-            username: String,
-            repoName: String,
-            pullRequestId: String
+                githubToken: String,
+                username: String,
+                repoName: String,
+                pullRequestId: String
         ): GithubService {
             val interceptor = Interceptor { chain ->
                 val newRequest =
-                    chain.request().newBuilder().addHeader(
-                        "Authorization",
-                        "token ${githubToken}"
-                    )
-                        .build()
+                        chain.request().newBuilder().addHeader(
+                                "Authorization",
+                                "token ${githubToken}"
+                        )
+                                .build()
                 chain.proceed(newRequest)
             }
             val okHttpClient = okhttp3.OkHttpClient.Builder()
-                .addNetworkInterceptor(interceptor).build()
+                    .addNetworkInterceptor(interceptor).build()
 
             val retrofit = Retrofit.Builder()
-                .baseUrl(GithubApiBaseUrl)
-                .client(okHttpClient)
-                .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().build()))
-                .build()
+                    .baseUrl(GithubApiBaseUrl)
+                    .client(okHttpClient)
+                    .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().build()))
+                    .build()
             return GithubService(
-                service = retrofit.create(GithubServiceInterface::class.java),
-                username = username,
-                repoName = repoName,
-                pullRequestId = pullRequestId
+                    service = retrofit.create(GithubServiceInterface::class.java),
+                    username = username,
+                    repoName = repoName,
+                    pullRequestId = pullRequestId
             )
         }
     }

@@ -4,26 +4,36 @@
 package android_lint_reporter
 
 import android_lint_reporter.github.GithubService
+import android_lint_reporter.model.Issue
 import android_lint_reporter.parser.Parser
 import android_lint_reporter.parser.Renderer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File
+import java.lang.NumberFormatException
+import java.util.*
 
 open class AndroidLintReporterPluginExtension(
         var lintFilePath: String = "",
         var githubUsername: String = "",
-        var githubRepositoryName: String = "")
+        var githubRepositoryName: String = ""
+)
 
 class AndroidLintReporterPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create("android_lint_reporter", AndroidLintReporterPluginExtension::class.java)
         project.tasks.register("parseAndSendLintResult") { task ->
             task.doLast {
-                println("received extension: ${extension.githubUsername}/${extension.githubRepositoryName}")
+                val DEBUG = false
                 val projectProperties = project.properties
                 val githubPullRequestId = projectProperties["githubPullRequestId"] as String
                 val githubToken = projectProperties["githubToken"] as String
+                val projectRootDir = if (DEBUG) {
+                    // replace this with your CI root environment for testing
+                    "/home/runner/work/SimpleCurrency/SimpleCurrency/"
+                } else {
+                    project.rootProject.projectDir
+                }
                 // for debugging path
 //                val fileTreeWalk = File("./").walkTopDown()
 //                fileTreeWalk.forEach {
@@ -31,31 +41,110 @@ class AndroidLintReporterPlugin : Plugin<Project> {
 //                        println("path: ${it.absolutePath}")
 //                    }
 //                }
-                if (extension.lintFilePath.length > 1 && extension.lintFilePath[0] == '.') {
-                    // example: this is to replace "./src/main/resources/lint-results.xml" into "<projectDir>/src/main/resources/lint-results.xml"
-                    extension.lintFilePath = "${project.projectDir.absolutePath}${extension.lintFilePath.substring(1)}"
-                }
-                val issues = Parser.parse(File(extension.lintFilePath))
-                val bodyString = Renderer.render(issues)
-
                 val service = GithubService.create(
                         githubToken = githubToken,
                         username = extension.githubUsername,
                         repoName = extension.githubRepositoryName,
                         pullRequestId = githubPullRequestId
                 )
+                val botUsername = service.getUser().execute().body()?.login
+                if (extension.lintFilePath.length > 1 && extension.lintFilePath[0] == '.') {
+                    // example: this is to replace "./src/main/resources/lint-results.xml" into "<projectDir>/src/main/resources/lint-results.xml"
+                    extension.lintFilePath = "${project.projectDir.absolutePath}${extension.lintFilePath.substring(1)}"
+                }
+                /* parse lint issues */
+                val issues = Parser.parse(File(extension.lintFilePath))
+                val lintHashMap = hashMapOf<String, MutableSet<Int>>()
+                val lintIssueHashMap = hashMapOf<String, Issue>()
+                issues.warningList.forEach { value ->
+                    val filename = value.location.file.replace("${projectRootDir}/", "")
+                    val set = lintHashMap[filename] ?: mutableSetOf()
+                    lintIssueHashMap[filename] = value
+                    try {
+                        set.add(value.location.line.toInt())
+                    } catch (e: NumberFormatException) {
+                        // for image files, like asdf.png, it doesn't have lines, so it will cause NumberFormatException
+                        // add -1 in that case
+                        set.add(-1)
+                    }
+                    lintHashMap[filename] = set
+                }
 
-                // escape single backslash, which will cause json parsing to fail
-                val regex = """\\(?!n)""".toRegex() // only escape backslash that doesn't followed by 'n', cause we want to keep '\n'
-                val escapedString = regex.replace(bodyString, "")
-                val response = service.postComment(escapedString).execute()
-                if (response.isSuccessful) {
-                    println("Lint result is posted to https://github.com/${extension.githubUsername}/${extension.githubRepositoryName}/${githubPullRequestId}!")
-                } else {
-                    println("An error has occurred... ")
-                    println("response code: ${response.code()}, message: ${response.message()}, body: ${response.errorBody()?.string()}")
+                try {
+                    /* get Pull Request files */
+                    val prFileResponse = service.getPullRequestFiles().execute()
+                    val files = prFileResponse.body()!!
+                    val fileHashMap = hashMapOf<String, TreeMap<Int, Int>>()
+                    files.forEach { githubPullRequestFilesResponse ->
+                        val patch = githubPullRequestFilesResponse.patch
+                        val regex = """@@ -(\d+),(\d+) \+(\d+),(\d+) @@""".toRegex()
+                        val matchGroups = regex.findAll(patch)
+                        val treeMap = TreeMap<Int, Int>() // line change start, how many lines
+                        matchGroups.forEach { value ->
+                            treeMap[value.groupValues[3].toInt()] = value.groupValues[3].toInt() + value.groupValues[4].toInt() - 1
+                        }
+                        fileHashMap[githubPullRequestFilesResponse.filename] = treeMap
+                    }
+                    fileHashMap.entries.forEach { (filename, treeMap) ->
+                        if (treeMap.isNotEmpty()) {
+                            val pairString = treeMap.map { (a, b) ->
+                                "($a, $b)"
+                            }.reduce { acc, s -> "$acc, $s" }
+                            println("$filename -> $pairString")
+                        }
+                    }
+                    /* get all comments from a pull request */
+                    // commentHashMap is used to check for duplicated comments
+                    val commentHashMap = hashMapOf<String, Int>() // commentHashMap[filename] -> line number
+                    val temp = service.getPullRequestComments().execute()
+                    temp.body()?.forEach { comment ->
+                        comment.line?.let { commentLine ->
+                            if (botUsername == comment.user.login) {
+                                commentHashMap[comment.path] = commentLine
+                            }
+                        }
+                    }
+                    /* check if lint issues are introduced in the files in this Pull Request */
+                    /* then check the comments to see if was previously posted, to prevent duplication */
+                    lintHashMap.forEach { (lintFilename, lintLineSet) ->
+                        lintLineSet.forEach { lintLine ->
+                            // if violated lint file is introduced in this PR, it will be found in fileHashMap
+                            if (fileHashMap.find(lintFilename, lintLine) && commentHashMap[lintFilename] != lintLine) {
+                                // post to github as a review comment
+                                val issue = lintIssueHashMap[lintFilename]
+                                if (issue?.message != null) {
+                                    try {
+                                        val commitResult = service.getPullRequestCommits().execute()
+                                        commitResult.body()?.last()?.sha?.let { lastCommitId ->
+                                            val postReviewCommitResult = service.postReviewComment(
+                                                    bodyString = Renderer.render(issue),
+                                                    lineNumber = issue.location.line.toInt(),
+                                                    path = issue.location.file.replace("${projectRootDir}/", ""),
+                                                    commitId = lastCommitId
+                                            ).execute()
+
+                                        }
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    println("error msg: ${e.message}")
+                    e.printStackTrace()
                 }
             }
         }
     }
+}
+
+fun HashMap<String, TreeMap<Int, Int>>.find(targetFilename: String, targetLine: Int): Boolean {
+    val entry: MutableMap.MutableEntry<Int, Int>? = this[targetFilename]?.floorEntry(targetLine)
+    if (entry != null && (entry.key <= targetLine && entry.value >= targetLine)) {
+        // found!
+        return true
+    }
+    return false
 }
