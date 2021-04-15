@@ -47,7 +47,7 @@ Note: The task `parseAndSendLintResult` is provided by this plugin!
 </details>
 
 ## How to Setup
-There are a couple of steps needed to setup everything.
+There are a couple of steps needed to set up everything.
 
 #### 1. Github Actions
 

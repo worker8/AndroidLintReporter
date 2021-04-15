@@ -18,7 +18,10 @@ class AndroidLintReporterPluginFunctionalTest {
         val sb = StringBuilder().apply {
             appendln("github_token property cannot be found in local.properties")
             appendln("please prepare local.properties in the root directory")
-            appendln("and set 'github_token=abcdefgh123456'")
+            appendln("and set the following content:")
+            appendln("    github_token=\"abcdefgh123456\"")
+            appendln("    project_username=\"worker8(replace with your project username)\"")
+            appendln("    project_name=\"SampleProjectName\"")
             appendln("otherwise, this functional test will fail because it needs a github personal access token to work")
         }
         sb.toString()
@@ -36,8 +39,8 @@ class AndroidLintReporterPluginFunctionalTest {
             }
             android_lint_reporter {
                 lintFilePath = "${File("").absolutePath}/src/main/resources/lint-results.xml" 
-                githubUsername = "worker8"
-                githubRepositoryName = "SimpleCurrency"
+                githubUsername = "${getProperties("project_username")}"
+                githubRepositoryName = "${getProperties("project_name")}"
             }
         """)
 
@@ -45,26 +48,30 @@ class AndroidLintReporterPluginFunctionalTest {
         val runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
-        runner.withArguments(listOf("parseAndSendLintResult", "-PgithubToken=${getGithubToken()}", "-PgithubPullRequestId=360"))
+        runner.withArguments(listOf("parseAndSendLintResult", "-PgithubToken=${getProperty("github_token")}", "-PgithubPullRequestId=360"))
         runner.withProjectDir(projectDir)
         val result = runner.build()
         println("output: ${result.output}")
         assertTrue(true)
     }
 
-    private fun getGithubToken(): String {
+    private fun getProperty(propertyName: String): String {
+        val props = getProperties()
+        if (props[propertyName] == null) {
+            error(noLocalPropertiesErrorMessage)
+        }
+        return props[propertyName] as String
+    }
+
+    private fun getProperties(): Properties {
         val props = Properties()
         val localPropertyFile: File
         try {
             localPropertyFile = File("local.properties")
             props.load(FileInputStream(localPropertyFile))
-            if (props["github_token"] == null) {
-                error(noLocalPropertiesErrorMessage)
-            }
-
         } catch (e: FileNotFoundException) {
             error(noLocalPropertiesErrorMessage)
         }
-        return props["github_token"] as String
+        return props
     }
 }

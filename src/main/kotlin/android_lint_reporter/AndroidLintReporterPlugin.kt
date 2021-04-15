@@ -56,12 +56,15 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                 val issues = Parser.parse(File(extension.lintFilePath))
                 val lintHashMap = hashMapOf<String, MutableSet<Int>>()
                 val lintIssueHashMap = hashMapOf<String, Issue>()
-                issues.warningList.forEach { value ->
-                    val filename = value.location.file.replace("${projectRootDir}/", "")
+                issues.forEach { issue ->
+                    val filename = issue.file.replace("${projectRootDir}/", "")
                     val set = lintHashMap[filename] ?: mutableSetOf()
-                    lintIssueHashMap[filename] = value
+                    lintIssueHashMap[filename] = issue
                     try {
-                        set.add(value.location.line.toInt())
+                        // TODO: handle the case where there's no line number: send a table accumulating all the errors/warnings as a separate comment
+                        issue.line?.let { _line ->
+                            set.add(_line)
+                        }
                     } catch (e: NumberFormatException) {
                         // for image files, like asdf.png, it doesn't have lines, so it will cause NumberFormatException
                         // add -1 in that case
@@ -118,11 +121,10 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                                         commitResult.body()?.last()?.sha?.let { lastCommitId ->
                                             val postReviewCommitResult = service.postReviewComment(
                                                     bodyString = Renderer.render(issue),
-                                                    lineNumber = issue.location.line.toInt(),
-                                                    path = issue.location.file.replace("${projectRootDir}/", ""),
+                                                    lineNumber = issue.line ?: 0,
+                                                    path = issue.file.replace("${projectRootDir}/", ""),
                                                     commitId = lastCommitId
                                             ).execute()
-
                                         }
                                     } catch (e: Exception) {
                                         e.printStackTrace()
