@@ -18,9 +18,10 @@ object Renderer {
             }
         }
         return """
-|  **${icon}**  |
-| - |
-| ${issue.message} |
+| |  **${icon}**  |
+| :--- | :--- |
+| :books: | ${issue.message} |
+| :hammer_and_wrench: | `${issue.rule}` |
 \n
 <p align="right">${issue.reportedBy}</p>
 """.trimIndent().escapeForJson()

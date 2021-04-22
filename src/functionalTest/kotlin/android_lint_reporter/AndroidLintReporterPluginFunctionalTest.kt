@@ -8,6 +8,7 @@ import java.io.File
 import org.gradle.testkit.runner.GradleRunner
 import java.io.FileInputStream
 import java.io.FileNotFoundException
+import java.lang.Exception
 import java.lang.StringBuilder
 import java.util.*
 import kotlin.test.Test
@@ -20,8 +21,8 @@ class AndroidLintReporterPluginFunctionalTest {
             appendln("please prepare local.properties in the root directory")
             appendln("and set the following content:")
             appendln("    github_token=\"abcdefgh123456\"")
-            appendln("    project_username=\"worker8(replace with your project username)\"")
-            appendln("    project_name=\"SampleProjectName\"")
+            appendln("    github_owner=\"worker8(replace with your project username)\"")
+            appendln("    github_repository_name=\"SampleProjectName\"")
             appendln("otherwise, this functional test will fail because it needs a github personal access token to work")
         }
         sb.toString()
@@ -38,9 +39,10 @@ class AndroidLintReporterPluginFunctionalTest {
                 id('com.worker8.android_lint_reporter')
             }
             android_lint_reporter {
-                lintFilePath = "${File("").absolutePath}/src/main/resources/lint-results.xml" 
-                githubUsername = "${getProperties("project_username")}"
-                githubRepositoryName = "${getProperties("project_name")}"
+                lintFilePath = "${File("").absolutePath}/lint-results.xml" 
+                detektFilePath = "${File("").absolutePath}/detekt_report.xml"
+                githubOwner= "${getProperty("github_owner")}"
+                githubRepositoryName = "${getProperty("github_repository")}"
             }
         """)
 
@@ -48,10 +50,18 @@ class AndroidLintReporterPluginFunctionalTest {
         val runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
-        runner.withArguments(listOf("parseAndSendLintResult", "-PgithubToken=${getProperty("github_token")}", "-PgithubPullRequestId=360"))
+        println("getProperty(\"github_token\"): ${getProperty("github_token")}")
+        println("getProperty(\"github_owner\"): ${getProperty("github_owner")}")
+        println("getProperty(\"github_repository\"): ${getProperty("github_repository")}")
+        runner.withArguments(listOf("report", "-PgithubToken=${getProperty("github_token")}", "-PisDebug=true", "-PgithubPullRequestId=366", "--stacktrace"))
         runner.withProjectDir(projectDir)
-        val result = runner.build()
-        println("output: ${result.output}")
+        try {
+            val result = runner.build()
+            println("function test ended with the following result: ${result.output}")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         assertTrue(true)
     }
 
