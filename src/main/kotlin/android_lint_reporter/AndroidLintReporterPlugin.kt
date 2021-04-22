@@ -54,6 +54,11 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                     // example: this is to replace "./src/main/resources/lint-results.xml" into "<projectDir>/src/main/resources/lint-results.xml"
                     extension.lintFilePath = "${project.projectDir.absolutePath}${extension.lintFilePath.substring(1)}"
                 }
+                if (extension.detektFilePath.length > 1 && extension.detektFilePath[0] == '.') {
+                    // example: this is to replace "./src/main/resources/detekt_report.xml" into "<projectDir>/src/main/resources/detekt_report.xml"
+                    extension.detektFilePath = "${project.projectDir.absolutePath}${extension.detektFilePath.substring(1)}"
+                }
+
                 /* parse lint issues */
                 val githubIssues = Parser.parse(File(extension.lintFilePath))
                 val detektIssues = Parser.parseDetektXml(File(extension.detektFilePath))
