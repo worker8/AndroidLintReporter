@@ -25,9 +25,10 @@ Here is how it works using Github Actions (it can be used in other CI as well).
   - then you can fix the lint warnings and push again
 </summary>
 
-<img width="1057" src="https://user-images.githubusercontent.com/1988156/114693261-6313fc80-9d54-11eb-8dda-431c5adf9ca5.png"/>
+<img width="1057" src="https://user-images.githubusercontent.com/1988156/115706111-4016c780-a3a8-11eb-8cc0-070b0d6e4362.png"/>
 <br>
-<img width="1057" src="https://user-images.githubusercontent.com/1988156/115523163-c27b8a80-a2c7-11eb-99f9-ff7c108863c8.png"/>
+<img width="1057" src="https://user-images.githubusercontent.com/1988156/115706102-3db46d80-a3a8-11eb-94cf-2b5a79d72bd4.png"/>
+
 </details>
 
 ## How to Setup
