@@ -1,59 +1,43 @@
 
 
-# AndroidLintReporter [![](https://img.shields.io/badge/latest-2.0.0-blue)](https://plugins.gradle.org/plugin/com.worker8.android_lint_reporter) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# AndroidLintReporter [![](https://img.shields.io/badge/latest-2.1.0-blue)](https://plugins.gradle.org/plugin/com.worker8.android_lint_reporter) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <img width="300" alt="Android Lint Reporter Logo" src="https://user-images.githubusercontent.com/1988156/79091365-fc968000-7d87-11ea-997d-2a0fa1f6ec5a.png">
 
-This is a Gradle Plugin to parse, format, report Android Lint result back to Github Pull Request using Github Actions. This is targetted for someone who's doing Android Development and using Github who wants to run lint on their pull request.
+This is a Gradle Plugin to report Android Lint and Detekt result back to Github Pull Request. This is targeted for someone who's doing Android Development and using Github who wants to run Android Lint and Detekt on their pull request.
+(Currently, this plugin assumes the usage of both Android Lint and Detekt)
 
-Here is how it works.
+Here is how it works using Github Actions (it can be used in other CI as well).
 
 <details>
 <summary>
-1. When a Pull Request is created:
+( 1 ) When a Pull Request is created, a Github Actions will be triggered:
 </summary>
 <br>
-<img width="1057" src="https://user-images.githubusercontent.com/1988156/77041343-13ea8380-69fd-11ea-9c94-2935aff4f542.png">
+<img width="1057" src="https://user-images.githubusercontent.com/1988156/115521839-83006e80-a2c6-11eb-9960-53fe714cbfee.png"/>
 </details>
-
-<details>
-<summary>
-2. Github Actions will be triggered:
-</summary>
 <br>
-<img width="1057" src="https://user-images.githubusercontent.com/1988156/77041423-3a102380-69fd-11ea-8aa8-8026b4d1375c.png">
-</details>
-
-<details>
-<summary>
-3. The Github Actions will run:
-</summary>
 <br>
-<code>
-./gradlew lint && ./gradlew parseAndSendLintResult -PgithubPullRequestId=<PR number> -PgithubToken=<Github Access Token>
-</code>
-
-Note: The task `parseAndSendLintResult` is provided by this plugin!
-</details>
-
 <details>
 <summary>
-4. This will produce this lint report and it will be reported back in the Pull Request:
+( 2 ) This will produce this lint report, and it will be reported back in the Pull Request:
 
   - then you can fix the lint warnings and push again
 </summary>
+
+<img width="1057" src="https://user-images.githubusercontent.com/1988156/114693261-6313fc80-9d54-11eb-8dda-431c5adf9ca5.png"/>
 <br>
-<img width="1057" src="https://user-images.githubusercontent.com/1988156/114693261-6313fc80-9d54-11eb-8dda-431c5adf9ca5.png">
+<img width="1057" src="https://user-images.githubusercontent.com/1988156/115523163-c27b8a80-a2c7-11eb-99f9-ff7c108863c8.png"/>
 </details>
 
 ## How to Setup
-There are a couple of steps needed to setup everything.
+There are a couple of steps needed to set up everything.
 
 #### 1. Github Actions
 
-First, we need to setup a a Github Action trigger to run lint and the gradle task provided by this plugin.
+First, we need to set up a Github Action trigger to run Detekt and Android Lint.
 
-Add a file in `.github/workflows/run-lint.yml` in the root of your project:
+Add a file in `.github/workflows/run-lint.yml` (you can name it anything) in the root of your project:
 
 ```yml
 name: Android Pull Request & Master CI
@@ -77,12 +61,17 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Run lint && parse lint-results.xml && send report to PR
+      - name: Run detekt
+        run: ./gradlew detekt
+        continue-on-error: true
+      - name: Run Android Lint
+        run: ./gradlew lint
+      - name: Run Android Lint Reporter to report Lint and Detekt result to PR 
         env:
           PR_NUMBER: ${{ github.event.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ./gradlew lint && ./gradlew parseAndSendLintResult -PgithubPullRequestId=$PR_NUMBER -PgithubToken=$GITHUB_TOKEN
+          ./gradlew report -PgithubPullRequestId=$PR_NUMBER -PgithubToken=$GITHUB_TOKEN
 ```
 <details>
 <summary>
@@ -162,8 +151,10 @@ plugins {
 }
 android_lint_reporter {
     lintFilePath = "./app/build/reports/lint-results.xml"
-    githubUsername = "worker8"
+    detektFilePath = ".app/build/reports/detekt_reports.xml"
+    githubOwner = "worker8"
     githubRepositoryName = "AndroidLintReporter"
+    showLog = true // optional - default to false, show extra information, will slow things down
 }
 ```
 
@@ -175,8 +166,10 @@ plugins {
 }
 android_lint_reporter {
     lintFilePath = "./app/build/reports/lint-results.xml"
-    githubUsername = "worker8"
+    detektFilePath = ".app/build/reports/detekt_reports.xml"
+    githubOwner = "worker8"
     githubRepositoryName = "AndroidLintReporter"
+    showLog = true // optional - default to false, show extra information, will slow things down
 }
 ```
 
@@ -196,10 +189,12 @@ Download Intellij Community Edition for free and open this project.
 
 **Setup Github Personal Access Token(PAT)**
 
-Prepare a file `local.properties` in the root directory of this project, with the following content:
+Prepare a file `local.properties` based on [local.properties.TEMPLATE](https://github.com/worker8/AndroidLintReporter/blob/master/local.properties.TEMPLATE) in the root directory of this project, with the following content:
 
 ```
-github_token="<obtain your personall access token from Github"
+github_token=<replace with your Github Personal Access Token (PAT)>
+github_owner=<replace with your Github Owner Name>
+github_repository=<replace with your Github Repository Name>
 ```
 
 You can test your Github API using your PAT using cURL:
@@ -208,15 +203,15 @@ curl -H "Authorization: token <github_token>" -H "Content-Type: application/json
 ```
 
 **run Functional Test**
-
-To run the test, use this command:
+The gist of this plugin is located in the class of `AndroidLintReporterPlugin.kt`.
+After setting everything up, you can run the test using this command:
 
 ```
 ./gradlew functionalTest
 ```
 
 To deploy:
-1. Download secrets from https://plugins.gradle.org/ after login.
+1. Download secrets from https://plugins.gradle.org/ after logging in.
 2. up version in `build.gradle.kts`
 3. then run `./gradlew publishPlugin`
 

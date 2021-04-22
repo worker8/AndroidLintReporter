@@ -1,0 +1,15 @@
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the SDK. This is only used by Gradle.
+# For customization when using a Version Control System, please read the
+# header note.
+#Tue May 19 17:00:16 JST 2020
+
+# rename this file into local.properties by removing '.TEMPLATE' from the filename
+sdk.dir=<replace with your sdk location>
+
+# you don't need quotes to surround the string, e.g. github_token=ASDF123123123
+github_token=<replace with your Github Personal Access Token>
+github_owner=<replace with your Github Owner Name>
+github_repository=<replace with your Github Repository Name>
