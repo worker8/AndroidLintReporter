@@ -36,7 +36,7 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                     // replace this with your CI root environment for testing
                     "/home/runner/work/${extension.githubRepositoryName}/${extension.githubRepositoryName}/"
                 } else {
-                    project.rootProject.projectDir.path
+                    project.rootProject.projectDir.path + "/"
                 }
                 // uncomment - for debugging path
                 // val fileTreeWalk = File("./").walkTopDown()
@@ -68,6 +68,7 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                 printLog("Number of Detekt Issues: ${detektIssues.size}")
                 val combinedLineHashMap = hashMapOf<String, MutableSet<Int>>()
                 val combinedIssueHashMap = hashMapOf<String, Issue>()
+                printLog("ddw projectRootDir: ${projectRootDir}, project.rootProject.projectDir.path: ${project.rootProject.projectDir.path}")
                 (detektIssues + githubIssues).forEach { issue ->
                     val filename = issue.file.replace(projectRootDir, "")
                     val set = combinedLineHashMap[filename] ?: mutableSetOf()
@@ -139,7 +140,6 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                         printLog("----List of Issues Locations----")
                     }
                     combinedLineHashMap.forEach { (filename, lineSet) ->
-
                         lineSet.forEach { lintLine ->
                             // if violated lint file is introduced in this PR, it will be found in fileHashMap
                             if (extension.showLog) {
