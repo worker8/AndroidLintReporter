@@ -29,4 +29,11 @@ sealed class Issue(
             override val rule: String,
             override val reportedBy: String = "by Detekt :mag: "
     ) : Issue(type, line, file, message, rule, reportedBy)
+
+    val reporter
+        get() = if (this is AndroidLintIssue) {
+            "AndroidLintIssue"
+        } else {
+            "DetektIssue"
+        }
 }

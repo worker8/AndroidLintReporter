@@ -43,6 +43,7 @@ class AndroidLintReporterPluginFunctionalTest {
                 detektFilePath = "${File("").absolutePath}/detekt_report.xml"
                 githubOwner= "${getProperty("github_owner")}"
                 githubRepositoryName = "${getProperty("github_repository")}"
+                showLog = true
             }
         """)
 

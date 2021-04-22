@@ -7,6 +7,7 @@ import android_lint_reporter.github.GithubService
 import android_lint_reporter.model.Issue
 import android_lint_reporter.parser.Parser
 import android_lint_reporter.parser.Renderer
+import android_lint_reporter.util.print
 import android_lint_reporter.util.printLog
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -18,7 +19,8 @@ open class AndroidLintReporterPluginExtension(
         var lintFilePath: String = "",
         var detektFilePath: String = "",
         var githubOwner: String = "",
-        var githubRepositoryName: String = ""
+        var githubRepositoryName: String = "",
+        var showLog: Boolean = false
 )
 
 class AndroidLintReporterPlugin : Plugin<Project> {
@@ -96,15 +98,17 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                         }
                         fileHashMap[githubPullRequestFilesResponse.filename] = treeMap
                     }
-                    // uncomment - to see file hash
-                    // fileHashMap.entries.forEach { (filename, treeMap) ->
-                    //     if (treeMap.isNotEmpty()) {
-                    //         val pairString = treeMap.map { (a, b) ->
-                    //             "($a, $b)"
-                    //         }.reduce { acc, s -> "$acc, $s" }
-                    //         printLog("$filename -> $pairString")
-                    //     }
-                    // }
+                    if (extension.showLog) {
+                        printLog("----Files change in this Pull Request----")
+                        fileHashMap.entries.forEach { (filename, treeMap) ->
+                            if (treeMap.isNotEmpty()) {
+                                val pairString = treeMap.map { (a, b) ->
+                                    "($a, $b)"
+                                }.reduce { acc, s -> "$acc, $s" }
+                                printLog("$filename -> $pairString")
+                            }
+                        }
+                    }
 
                     /* get all comments from a pull request */
                     // commentHashMap is used to check for duplicated comments
@@ -120,16 +124,34 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                         }
                     }
                     printLog("Number of comments found in PR: ${commentHashMap.size}")
+                    if (extension.showLog) {
+                        printLog("----List of Comments in this Pull Request----")
+                        commentHashMap.forEach { (filename, lineSet) ->
+                            printLog("$filename -> ${lineSet.print()}")
+                        }
+                        if (commentHashMap.isEmpty()) {
+                            printLog("0 comments found in this PR...")
+                        }
+                    }
                     /* check if lint issues are introduced in the files in this Pull Request */
                     /* then check the comments to see if was previously posted, to prevent duplication */
-                    combinedLineHashMap.forEach { (lintFilename, lintLineSet) ->
-                        // uncomment - to see file name --> [file lines]
-                        // printLog("$lintFilename: ${lintLineSet.map { it.toString() }.reduce { acc, i -> "$acc, $i" }}")
-                        lintLineSet.forEach { lintLine ->
+                    if (extension.showLog) {
+                        printLog("----List of Issues Locations----")
+                    }
+                    combinedLineHashMap.forEach { (filename, lineSet) ->
+
+                        lineSet.forEach { lintLine ->
                             // if violated lint file is introduced in this PR, it will be found in fileHashMap
-                            if (fileHashMap.find(lintFilename, lintLine) && commentHashMap[lintFilename]?.contains(lintLine) != true) {
+                            if (extension.showLog) {
+                                val issue = combinedIssueHashMap[lintIssueKey(filename, lintLine)]
+                                printLog("$filename:$lintLine (${issue?.reporter})")
+                            }
+                            if (fileHashMap.find(filename, lintLine) && commentHashMap[filename]?.contains(lintLine) != true) {
                                 // post to github as a review comment
-                                val issue = combinedIssueHashMap[lintIssueKey(lintFilename, lintLine)]
+                                val issue = combinedIssueHashMap[lintIssueKey(filename, lintLine)]
+                                if (extension.showLog) {
+                                    printLog("new issue found: $issue")
+                                }
                                 if (issue?.message != null) {
                                     try {
                                         val commitResult = service.getPullRequestCommits().execute()
@@ -147,6 +169,7 @@ class AndroidLintReporterPlugin : Plugin<Project> {
                                             }
                                         }
                                     } catch (e: Exception) {
+                                        printLog("posting comment failed :(\n error mesage: ${e.message}")
                                         e.printStackTrace()
                                     }
                                 }
